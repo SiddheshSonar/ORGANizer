@@ -16,5 +16,6 @@ const rC = new ReceiverController();
 rR.post("/mlogin", rC.login);
 rR.get("/fcmtoken", auth, rC.getFCMToken);
 rR.post("/fcmtoken", auth, rC.updateFCMToken);
+rR.get("/", auth, rC.getAllRecipients)
 
 export default rR;

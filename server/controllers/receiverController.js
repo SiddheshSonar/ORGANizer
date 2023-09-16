@@ -68,6 +68,26 @@ class ReceiverController {
             res.status(500).send({ message: "Internal server error" })
         }
     }
+
+    getAllRecipients = async (req, res) => {
+        try {
+            const receiverWithEHR = await Receiver.aggregate([
+                {
+                    $lookup: {
+                        from: "ehrs",
+                        localField: "phone",
+                        foreignField: "phone",
+                        as: "ehrData"
+                    }
+                }
+            ]);
+    
+            res.status(200).json(receiverWithEHR);
+        } catch (error) {
+            res.status(404).json({ message: error.message });
+        }
+    }
+    
 }
 
 export default ReceiverController;

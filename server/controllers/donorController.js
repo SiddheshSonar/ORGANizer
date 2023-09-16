@@ -41,7 +41,6 @@ class DonorController {
             res.status(404).json({ message: error.message });
         }
     }
-    
 
 }
 
