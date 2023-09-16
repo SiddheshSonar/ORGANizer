@@ -6,18 +6,35 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typewriter from 'typewriter-effect';
 import APIRequests from '../../api';
 import VerifyEmailForm from "./verifyOtp";
+import { TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import Logo from '../../assets/Organ_logo.png';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
-
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [type, setType] = useState(''); 
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     // const [loginStat, setLoginStat] = useState(false)
     const [otp, setOtp] = useState(false)
+
+    const users = [
+        {
+            value: 'donor',
+            label: 'Donor',
+        },
+        {
+            value: 'recipient',
+            label: 'Recipient',
+        },
+        {
+            value: 'hospital',
+            label: 'Hospital',
+        },
+    ];
 
     useEffect(() => {
         if (localStorage.getItem("isIn") === 'true') {
@@ -29,13 +46,19 @@ const Login = () => {
         return new Promise(res => setTimeout(res, delay));
     }
 
+    useEffect(() => {
+        console.log(type)
+    }, [type])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userDetails = {
             email: email,
             password: password,
+            type: type,
         };
-        if (!email || !password) {
+        console.log(userDetails)
+        if (!email || !password || !type) {
             toast.error('Please fill in all fields!');
             return;
         }
@@ -106,6 +129,27 @@ const Login = () => {
             <div className='w-2/5 h-full bg-white flex flex-col items-center justify-center gap-4'>
                 <div className='text-3xl font-bold'>
                     Get Started
+                </div>
+                <div className='flex items-center justify-center gap-2'>
+                    <div>
+                        Tell us who you are:
+                    </div>
+                    <div>
+                    <TextField
+                        label="Identity"
+                        select
+                        sx={{ width: '150px' }}
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        variant="outlined"
+                    >
+                        {users.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    </div>
                 </div>
                 <div className='flex items-center justify-center w-full'>
                     <form className='flex flex-col items-center justify-center gap-4 w-3/4' onSubmit={handleSubmit}>
