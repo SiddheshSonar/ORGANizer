@@ -53,10 +53,10 @@ const receiverSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  health_history: [String],
+  health_history: String,
   condition: {
     type: String,
-    required: true,
+    required: false,
   },
   wait_time : {
     type: String,
