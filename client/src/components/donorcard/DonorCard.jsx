@@ -28,7 +28,7 @@ const DonorCard = () => {
             setParts(res.data.organ.map((part) => {
                 return (
                     <div className='bg-maroon text-cream px-2.5 py-1 rounded-2xl'>
-                        {part}
+                        {part.name}
                     </div>
                 )
             }))
