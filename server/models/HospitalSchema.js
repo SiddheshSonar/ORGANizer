@@ -8,10 +8,12 @@ const hospitalSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique:true,
   },
   phone: {
     type: Number,
-    required: false,
+    required: true,
+    unique:true,
   },
   otp: {
     type: Number,

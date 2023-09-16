@@ -12,6 +12,7 @@ export default {
       'lg-pink': '#ffadbe',
       'cream': '#F9DEC9',
       'maroon': '#3D0C11',
+      'smt': '#ce5e50',
     },
     extend: {
       boxShadow: {
@@ -28,12 +29,13 @@ export default {
         'test': '88%',
       },
       width: {
-        'test': '95%',
+        'home': '62.5%',
+        'htext': '37.5%',
       },
       screens: {
+        'navBr': '992px',
+        'navBrM': {'max': '992px'},
         // 'exp': {'max': '1266px'},
-        // 'navBr': '992px',
-        // 'navBrM': {'max': '992px'},
         // 'dbBr': '830px',
         // 'dbBrM': {'max':'860px'},
         // 'tab': '580px',

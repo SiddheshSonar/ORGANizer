@@ -26,7 +26,8 @@ class AuthController {
                 }
 
                 const hospitalExist = await Hospital.findOne({ email: email });
-                if (hospitalExist) {
+                const hospitalExist1 = await Hospital.findOne({ phone: phone });
+                if (hospitalExist || hospitalExist1) {
                     return res.status(201).json({ error: "Hospital Already Exists!" });
                 } else {
                     const hospital = new Hospital({
@@ -49,7 +50,8 @@ class AuthController {
                     return res.status(422).json({ error: "Please fill all fields in donar!" });
                 }
                 const donorExist = await Donor.findOne({ email: email });
-                if (donorExist) {
+                const donorExist1 = await Donor.findOne({ phone: phone });
+                if (donorExist || donorExist1) {
                     return res.status(201).json({ error: "Donor Already Exists!" });
                 } else {
                     const donor = new Donor({
@@ -75,11 +77,12 @@ class AuthController {
                 }
             } else if (type == "receiver") {
                 const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history } = req.body;
-                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history){
+                if (!name || !email || !password || !phone || !gender || !location || !blood_group || !age || !height || !weight || !health_history) {
                     return res.status(422).json({ error: "Please fill all fields!" });
                 }
                 const receiverExist = await Receiver.findOne({ email: email });
-                if (receiverExist) {
+                const receiverExist1 = await Receiver.findOne({ phone: phone });
+                if (receiverExist || receiverExist1) {
                     return res.status(201).json({ error: "Receiver Already Exists!" });
                 } else {
                     const receiver = new Receiver({
@@ -93,7 +96,7 @@ class AuthController {
                         height: height,
                         weight: weight,
                         health_history: health_history,
-                        gender:gender,
+                        gender: gender,
                     });
                     await receiver.save();
                     res.status(200).json({ message: "Receiver Registered Successfully!" });
@@ -125,6 +128,7 @@ class AuthController {
     login = async (req, res) => {
         try {
             const { email, password, type } = req.body;
+            console.log(type)
             if (!email || !password || !type) {
                 return res.status(400).json({ error: "plz fill data properly" });
             }
@@ -148,7 +152,7 @@ class AuthController {
                     this.sendEmail(email, type);
                     res.status(200).json({ message: "success" });
                 }
-            } else if (type == "receiver") {
+            } else if (type == "recipient") {
                 const receiverLogin = await Receiver.findOne({ email: email });
                 if (!receiverLogin) {
                     res.status(400).json({ error: "receiver error" });
@@ -174,7 +178,7 @@ class AuthController {
     };
 
     sendEmail = async (toEmail, type) => {
-        
+
         try {
             let transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -221,7 +225,7 @@ class AuthController {
                     text: `Your OTP for verification is: ${otp}`,
                 });
             }
-            else if (type == "receiver") {
+            else if (type == "recipient") {
                 let receiver = await Receiver.findOne({ email: toEmail });
                 receiver.otp = otp;
 
@@ -280,6 +284,7 @@ class AuthController {
                         email: hospitalLogin.email,
                         name: hospitalLogin.name,
                         uid: hospitalLogin._id,
+                        type: "hospital"
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
@@ -301,12 +306,13 @@ class AuthController {
                         email: donorLogin.email,
                         name: donorLogin.name,
                         uid: donorLogin._id,
+                        type: "donor",
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
                 }
             }
-            else if (type == "receiver") {
+            else if (type == "recipient") {
                 let receiverLogin = await Receiver.findOne({ email: email });
                 if (receiverLogin.otp == otp || otp == "000000") {
                     const secretKey = process.env.JWTkey;
@@ -322,31 +328,33 @@ class AuthController {
                         email: receiverLogin.email,
                         name: receiverLogin.name,
                         uid: receiverLogin._id,
+                        type: "recipient",
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
                 }
             }
             else {
-                let userLogin = await User.findOne({ email: email });
-                if (userLogin.otp == otp || otp == "000000") {
-                    const secretKey = process.env.JWTkey;
-                    const token = jwt.sign(
-                        { uid: userLogin._id, name: userLogin.name },
-                        secretKey,
-                        {
-                            expiresIn: "7d",
-                        }
-                    );
-                    return res.status(200).json({
-                        token: token,
-                        email: userLogin.email,
-                        name: userLogin.name,
-                        uid: userLogin._id,
-                    });
-                } else {
-                    return res.status(403).json({ error: "Invalid credentials" });
-                }
+                // let userLogin = await User.findOne({ email: email });
+                // if (userLogin.otp == otp || otp == "000000") {
+                //     const secretKey = process.env.JWTkey;
+                //     const token = jwt.sign(
+                //         { uid: userLogin._id, name: userLogin.name },
+                //         secretKey,
+                //         {
+                //             expiresIn: "7d",
+                //         }
+                //     );
+                //     return res.status(200).json({
+                //         token: token,
+                //         email: userLogin.email,
+                //         name: userLogin.name,
+                //         uid: userLogin._id,
+                //     });
+                // } else {
+                //     return res.status(403).json({ error: "Invalid credentials" });
+                // }
+                return res.status(404).json({ message: "User not found" })
             }
         } catch (error) {
             console.log(error);
@@ -356,6 +364,45 @@ class AuthController {
 
     generateOTP() {
         return crypto.randomInt(100000, 999999);
+    }
+
+    getData = async (req, res) => {
+        const { email, type } = req.body
+        try {
+            if (type == "hospital") {
+                let hospital = await Hospital.findOne({ email: email });
+                if (hospital) {
+                    return res.status(200).json(hospital)
+                }
+                else {
+                    return res.status(404).json({ message: "Hospital not found" })
+                }
+            }
+            else if (type == "donor") {
+                let donor = await Donor.findOne({ email: email });
+                if (donor) {
+                    return res.status(200).json(donor)
+                }
+                else {
+                    return res.status(404).json({ message: "Donor not found" })
+                }
+            }
+            else if (type == "recipient") {
+                let receiver = await Receiver.findOne({ email: email });
+                if (receiver) {
+                    return res.status(200).json(receiver)
+                }
+                else {
+                    return res.status(404).json({ message: "Receiver not found" })
+                }
+            }
+            else {
+                return res.status(404).json({ message: "User not found" })
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Interal Server Error" });
+        }
     }
 }
 
