@@ -6,8 +6,18 @@ class DonorController {
 
     getAllDonors = async (req, res) => {
         try {
-            const donors = await Donor.find();
-            res.status(200).json(donors);
+            const donorsWithEHR = await Donor.aggregate([
+                {
+                    $lookup: {
+                        from: "ehrs",
+                        localField: "phone",
+                        foreignField: "phone",
+                        as: "ehrData"
+                    }
+                }
+            ]);
+    
+            res.status(200).json(donorsWithEHR);
         } catch (error) {
             res.status(404).json({ message: error.message });
         }

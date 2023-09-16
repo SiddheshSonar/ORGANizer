@@ -3,6 +3,7 @@ import admin from "firebase-admin";
 
 import serviceAccount from "../secrets/firebase-admin.json" assert { type: "json" };
 import Receiver from "../models/ReceiverSchema.js";
+import EHR from "../models/EHRSchema.js";
 
 class UserController {
     constructor() {
@@ -31,6 +32,19 @@ class UserController {
             }
         } catch (error) {
 
+        }
+    }
+
+    test = async (req, res) => {
+        try {
+            const ehrData = req.body;
+    
+            const newEHR = new EHR(ehrData);
+            await newEHR.save();
+    
+            res.status(201).send({ message: 'EHR record successfully added!' });
+        } catch (error) {
+            res.status(500).send({ message: 'Error inserting EHR record', error: error.message });
         }
     }
 
