@@ -13,6 +13,8 @@ import Logo from '../../assets/Organ_logo.png'
 const NavB = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const Open = Boolean(anchorEl)
+    const user = JSON.parse(localStorage.getItem('profile'))
+    const userType = user.type
 
     const currPath = window.location.pathname
 
@@ -61,13 +63,20 @@ const NavB = () => {
                         }} >
                             Home
                         </Nav.Link>
-                        <Nav.Link
+                       {userType === 'recipient' && <Nav.Link
                         onClick={() => navigateTo('/application')} 
                         style={{
                             fontWeight: currPath === '/application' ? '700' : '400',
                         }}>
                             Application
-                        </Nav.Link>
+                        </Nav.Link>}
+                       {userType === 'donor' && <Nav.Link
+                        onClick={() => navigateTo('/donorcard')} 
+                        style={{
+                            fontWeight: currPath === '/application' ? '700' : '400',
+                        }}>
+                            Donor Card
+                        </Nav.Link>}
                         <Nav.Link
                         onClick={() => navigateTo('/hospitals')} 
                         style={{

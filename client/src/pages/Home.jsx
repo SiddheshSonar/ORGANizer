@@ -28,7 +28,7 @@ const Home = () => {
         if (userType === 'donor') {
             setTitle('Welcome Back, Lifesaver!')
             setContent('Thank you for your commitment to saving lives as a registered organ donor. Your decision to donate is a powerful testament to your compassion and humanity.We salute your unwavering commitment to saving lives through organ donation.')
-            setButton('')
+            setButton('My Donor Card ')
         } else if (userType === 'recipient') {
             setTitle('Find Hope, Find Life!')
             setContent('Are you or a loved one in need of a life-saving organ transplant? We understand the challenges and emotions that come with this journey. Our mission is to bring hope to those seeking a second chance at life by connecting you with generous organ donors who are willing to make a difference.')
@@ -71,13 +71,13 @@ const Home = () => {
                 <div className='text-red text-lg font-medium'>
                    {content}
                 </div>
-               {(userType === 'recipient')  && <div>
+               <div>
                     <button onClick={() => {
-                        window.location.href = '/application'
+                        window.location.href = userType === 'recipient' ? '/application' : '/donorcard'
                     }} className='bg-maroon text-white text-lg font-medium py-2 px-4 rounded-lg flex items-center gap-2 transform transition-transform duration-300 ease-in-out hover:scale-105'>
-                        Find a Donor <EastIcon sx={{ color: "white" }} />
+                        {button}<EastIcon sx={{ color: "white" }} />
                     </button>
-                </div>}
+                </div>
             </div>
             <div className='h-full w-home navBrM:self-end navBrM:w-1/2'>
                 <img

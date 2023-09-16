@@ -17,7 +17,7 @@ class HospitalController {
             const hospital_id = req.userID;
             console.log(hospital_id)
             // const { hospital_id, organ, expiry_hours } = req.body;
-            const {  organ, expiry_hours } = req.body;
+            const { organ, expiry_hours } = req.body;
             const expiry_time = expiry_hours * 60 * 60;
             console.log(expiry_time);
             const hospital = await Hospital.findById(hospital_id);

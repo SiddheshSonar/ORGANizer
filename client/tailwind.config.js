@@ -26,11 +26,12 @@ export default {
         'test': '60%',
       },
       height: {
-        'test': '88%',
+        'card': '20rem',
       },
       width: {
         'home': '62.5%',
         'htext': '37.5%',
+        'card': '40rem',
       },
       screens: {
         'navBr': '992px',
