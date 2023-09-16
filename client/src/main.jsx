@@ -15,6 +15,7 @@ import Hospital from './components/hospital/Hospital.jsx';
 import Home from './pages/Home.jsx';
 import Donor from './pages/Donor.jsx';
 import Application from './pages/Application.jsx';  
+import Transplant from './pages/Transplant.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: "/application",
     element: <Application />
+  },
+  {
+    path: "/transplant",
+    element: <Transplant />
   },
 ]);
 
