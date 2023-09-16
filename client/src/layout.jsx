@@ -14,8 +14,19 @@ export const metadata = {
 const Layout = ({ children }) => {
     return (
         <>
-            test
-            <ToastContainer />
+            <ToastContainer
+                position="top-center"
+                autoClose={1500}
+                limit={2}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover={false}
+                theme="light"
+            />
             {children}
         </>
     )

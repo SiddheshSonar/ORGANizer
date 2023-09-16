@@ -1,50 +1,42 @@
-
-import * as React from 'react';
-import { motion } from 'framer-motion'
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { IconButton } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Typewriter from 'typewriter-effect';
+import axios from 'axios';
 import APIRequests from '../../api';
 import VerifyEmailForm from "./verifyOtp"
-import { toast } from 'react-toastify';
 import './login.css'
-// import RegisterModal from './components/registerModal';
-// import dotenv from 'dotenv';
 
-// dotenv.config();
 
 const Login = () => {
     const [modal, setModal] = useState(false);
-    const [userDetails, setUserDetails] = useState({
-        email: "",
-        password: ""
-    });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [loginStat, setLoginStat] = useState(false)
+    const [otp, setOtp] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (localStorage.getItem("isIn") === 'true') {
             // window.location.href = "/";
         }
     }, []);
 
+    function timeout(delay) {
+        return new Promise(res => setTimeout(res, delay));
+    }
+
     const handleChange = (e) => {
         setUserDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
-
-    const [loginStat, setLoginStat] = useState(false)
-    const [otp, setOtp] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (userDetails.email === "" || userDetails.password === "") {
-                toast.error('Please fill all the fields!', {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
+                toast.error('Please fill all the fields!');
                 return;
             }
             const response = await APIRequests.signIn(userDetails);
@@ -59,16 +51,7 @@ const Login = () => {
         } catch (error) {
             // setLoginStat(false);
             // localStorage.setItem("isIn", 'false');
-            toast.error('Login Failed!', {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.error('Login Failed!');
             console.log(error);
         }
     }
@@ -89,49 +72,81 @@ const Login = () => {
             handleSubmit(event);
         }
     }
-
+    
     return (
-        <div className="loginBox mob:w-52">
+        <div className='w-full h-screen flex items-center justify-center'>
             <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={userDetails.email} />
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0, duration: 1 }}
-                exit={{ opacity: 0 }}>
-                <h2>Login</h2>
-                <form>
-                    <div className="userBox">
-                        <input type="text" id="userid" name="email" onChange={handleChange} onKeyDown={handleKeyPress}></input>
-                        <label>Email</label>
-                    </div>
-                    <div className="userBox">
-                        <input type="password" id="myInput" name="password" onChange={handleChange} onKeyDown={handleKeyPress}></input>
-                        <label>Password</label>
-                        <i className="far fa-eye" id="togglePassword"
-                            onClick={() =>
-                                myFunction()
-                            }
-                        ></i>
-
+            <div className='w-3/5 h-full bg-log p-4 flex flex-col items-start justify-start gap-56'>
+                <div className='flex items-center justify-start gap-2'>
+                    <div className='text-logo text-3xl font-bold'>
+                        empsing
                     </div>
                     <div>
-                        <a className='submit-btn' onClick={handleSubmit}>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            Submit
-                        </a>
-                        <div className='text-register mt-4 w-full text-center text-sm'>
-                            Not a user? <a onClick={() => {
-                                setModal(!modal);
-                            }} className='hover:text-login cursor-pointer hover:underline'>Register</a>
-                        </div>
+                        <img
+                            src=""
+                            alt=""
+                            width="30"
+                        />
                     </div>
-                </form>
-            </motion.div>
+                </div>
+                <div className='text-logo text-3xl font-bold'>
+                    <Typewriter
+                        options={{
+                            strings: ['Welcome to empsing!', 'Your one stop solution for all your needs!', 'Get started now!'],
+                            delay: 50,
+                            autoStart: true,
+                            loop: true,
+                        }}
 
-            {/* <RegisterModal modal={modal} setModal={setModal}/> */}
+                    />
+                </div>
+            </div>
+            <div className='w-2/5 h-full bg-white flex flex-col items-center justify-center gap-4'>
+                <div className='text-3xl font-bold'>
+                    Get Started
+                </div>
+                <div className='flex items-center justify-center w-full'>
+                    <form className='flex flex-col items-center justify-center gap-4 w-3/4' onSubmit={handleSubmit}>
+                        <input
+                            className='w-full border h-12 p-2.5 rounded-md'
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <div className='relative w-full'>
+                            <input
+                                className='w-full border h-12 p-2.5 rounded-md pr-10'
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <IconButton
+                                sx={{
+                                    position: "absolute",
+                                    top: "5px",
+                                    right: "5px",
+                                }}
+                                onClick={togglePasswordVisibility}
+                            >
+                                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                            </IconButton>
+                        </div>
+                        <input
+                            className='p-2.5 w-24 bg-sub text-white rounded-xl cursor-pointer hover:bg-sub-dark'
+                            type="submit"
+                            value="Login"
+                        />
+                    </form>
+                </div>
+                <div>
+                    Not a member? <a className='underline decoration-solid text-sub' href="">Sign up</a>
+                </div>
+                <div className=''>
+                    Terms and Conditions
+                </div>
+            </div>
         </div>
     )
 }
