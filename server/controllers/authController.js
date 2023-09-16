@@ -327,25 +327,26 @@ class AuthController {
                 }
             }
             else {
-                let userLogin = await User.findOne({ email: email });
-                if (userLogin.otp == otp || otp == "000000") {
-                    const secretKey = process.env.JWTkey;
-                    const token = jwt.sign(
-                        { uid: userLogin._id, name: userLogin.name },
-                        secretKey,
-                        {
-                            expiresIn: "7d",
-                        }
-                    );
-                    return res.status(200).json({
-                        token: token,
-                        email: userLogin.email,
-                        name: userLogin.name,
-                        uid: userLogin._id,
-                    });
-                } else {
-                    return res.status(403).json({ error: "Invalid credentials" });
-                }
+                // let userLogin = await User.findOne({ email: email });
+                // if (userLogin.otp == otp || otp == "000000") {
+                //     const secretKey = process.env.JWTkey;
+                //     const token = jwt.sign(
+                //         { uid: userLogin._id, name: userLogin.name },
+                //         secretKey,
+                //         {
+                //             expiresIn: "7d",
+                //         }
+                //     );
+                //     return res.status(200).json({
+                //         token: token,
+                //         email: userLogin.email,
+                //         name: userLogin.name,
+                //         uid: userLogin._id,
+                //     });
+                // } else {
+                //     return res.status(403).json({ error: "Invalid credentials" });
+                // }
+                return res.status(404).json({message: "User not found"})
             }
         } catch (error) {
             console.log(error);

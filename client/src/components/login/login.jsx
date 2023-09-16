@@ -91,7 +91,7 @@ const Login = () => {
     
     return (
         <div className='w-full h-screen flex items-start justify-start'>
-            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} />
+            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} type={type} />
             <div className='w-3/5 h-full bg-pink p-4 flex flex-col items-start justify-start gap-56'>
                 <div className='flex items-center justify-start gap-2 w-full'>
                     <div>
