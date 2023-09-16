@@ -22,8 +22,6 @@ class UserController {
                 let message = {
                     notification: { title: title, body: body }, token: user.fcm_token,
                 };
-
-                // const response = await admin.messaging().sendToDevice(user.fcm_token, payload, options);
                 const response = await admin.messaging().send(message)
                 console.log(response);
                 res.status(200).send({ message: "Notification sent" });
