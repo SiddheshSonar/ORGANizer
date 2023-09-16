@@ -92,10 +92,17 @@ const DonForm = () => {
     aadhar_card: "",
   });
 
-  useEffect(() => {
-    setRegistrationDetails({ ...registrationDetails, organ: organ, tissue: tissue });
-    }, [organ],[tissue]);
-    
+  useEffect(
+    () => {
+      setRegistrationDetails({
+        ...registrationDetails,
+        organ: organ,
+        tissue: tissue,
+      });
+    },
+    [organ],
+    [tissue]
+  );
 
   const bGroup = [
     {
@@ -225,16 +232,16 @@ const DonForm = () => {
           }
         />
         <TextField
-            label="Aadhaar Number"
-            type="number"
-            variant="outlined"
-            value={registrationDetails.aadhar_card}
-            onChange={(e) =>
-                setRegistrationDetails({
-                    ...registrationDetails,
-                    aadhar_card: e.target.value,
-                })
-            }
+          label="Aadhaar Number"
+          type="number"
+          variant="outlined"
+          value={registrationDetails.aadhar_card}
+          onChange={(e) =>
+            setRegistrationDetails({
+              ...registrationDetails,
+              aadhar_card: e.target.value,
+            })
+          }
         />
         <TextField
           label="Blood Group"
@@ -357,43 +364,52 @@ const DonForm = () => {
           ))}
         </Select>
         <div className="gap-4">
-  {witnesses.map((witness, index) => (
-    <div key={index} className="flex gap-4">
-      <TextField
-        label={`Witness #${index + 1} Name`}
-        variant="outlined"
-        name="name"
-        value={witness.name}
-        onChange={(e) => handleWitnessChange(index, e)}
-      />
-      <TextField
-        label={`Witness #${index + 1} Phone`}
-        variant="outlined"
-        name="phone"
-        value={witness.phone}
-        onChange={(e) => handleWitnessChange(index, e)}
-      />
-      <TextField
-        label={`Witness #${index + 1} Email`}
-        variant="outlined"
-        name="email"
-        value={witness.email}
-        onChange={(e) => handleWitnessChange(index, e)}
-      />
-      <Button className="h-12" variant="outlined"size="small" color="error" onClick={() => removeWitness(index)}>
-        Remove Witness
-      </Button>
-    </div>
-  ))}
-</div>
-        
-<div className="flex gap-4">
-  <Button className="h-12" variant="outlined"size="small" onClick={addWitness}>
-    Add Witnesses
-  </Button>
-</div>
+          {witnesses.map((witness, index) => (
+            <div key={index} className="flex gap-4">
+              <TextField
+                label={`Witness #${index + 1} Name`}
+                variant="outlined"
+                name="name"
+                value={witness.name}
+                onChange={(e) => handleWitnessChange(index, e)}
+              />
+              <TextField
+                label={`Witness #${index + 1} Phone`}
+                variant="outlined"
+                name="phone"
+                value={witness.phone}
+                onChange={(e) => handleWitnessChange(index, e)}
+              />
+              <TextField
+                label={`Witness #${index + 1} Email`}
+                variant="outlined"
+                name="email"
+                value={witness.email}
+                onChange={(e) => handleWitnessChange(index, e)}
+              />
+              <Button
+                className="h-12"
+                variant="outlined"
+                size="small"
+                color="error"
+                onClick={() => removeWitness(index)}
+              >
+                Remove Witness
+              </Button>
+            </div>
+          ))}
+        </div>
 
-       
+        <div className="flex gap-4">
+          <Button
+            className="h-12"
+            variant="outlined"
+            size="small"
+            onClick={addWitness}
+          >
+            Add Witnesses
+          </Button>
+        </div>
 
         <TextField
           id="outlined-multiline-static"
@@ -410,7 +426,6 @@ const DonForm = () => {
             })
           }
         />
-        
 
         <input
           className="p-2.5 w-24 bg-red text-white rounded-xl cursor-pointer hover:bg-sub-dark "
