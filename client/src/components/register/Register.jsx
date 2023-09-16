@@ -41,8 +41,8 @@ const Register = () => {
                 {title}
                 </div>
             </div>
-            <Box sx={{ width: '100%', typography: 'body1' }}>
-                <TabContext value={value}>
+            <Box sx={{ width: '100%', height: "100%", overflowY: "scroll",typography: 'body1' }}>
+                <TabContext sx={{ }} value={value}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList value={value}
                             onChange={handleChange}
