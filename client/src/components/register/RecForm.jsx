@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -8,6 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 import MenuItem from '@mui/material/MenuItem';
 import LocationSearchInput from '../map/LocationSearch';
 import MyMap from '../map/Map';
+import { toast } from 'react-toastify';
 
 const RecForm = () => {
     const [location, setLocation] = useState(null);
@@ -26,6 +27,11 @@ const RecForm = () => {
         health_history: '',
         condition: '',
     });
+
+    useEffect(() => {
+        console.log(location);
+        setRegistrationDetails({ ...registrationDetails, location: location });
+    }, [location]);
 
     
 
@@ -71,6 +77,10 @@ const RecForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (registrationDetails.password !== registrationDetails.confirmPassword) {
+            toast.error('Passwords do not match');
+            // return;
+        }
         console.log(registrationDetails)
     }
 
@@ -165,7 +175,9 @@ const RecForm = () => {
                             multiline
                             minRows={1}
                             maxRows={4}
-                            // sx={{ width: '100%' }}
+                            sx={{ width: '100%' }}
+                            value={registrationDetails.health_history}
+                            onChange={(e) => setRegistrationDetails({ ...registrationDetails, health_history: e.target.value })}
                         />
                     <label className='w-full'>
                         Location:
