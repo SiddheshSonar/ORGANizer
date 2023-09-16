@@ -19,6 +19,10 @@ export default function VerifyEmailForm({ open, handleClose, email, type }) {
     const [pin, setPin] = useState("");
     const navigate = useNavigate();
 
+    function timeout(delay) {
+        return new Promise(res => setTimeout(res, delay));
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -32,6 +36,7 @@ export default function VerifyEmailForm({ open, handleClose, email, type }) {
                 localStorage.setItem("isIn", 'true');
                 localStorage.setItem("profile", JSON.stringify(res.data));
                 toast.success('Login Successful!');
+                await timeout(2000);
                 window.location.pathname = '/home'
             }
             handleClose();
