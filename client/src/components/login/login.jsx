@@ -28,12 +28,16 @@ const Login = () => {
         return new Promise(res => setTimeout(res, delay));
     }
 
-    const handleChange = (e) => {
-        setUserDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const userDetails = {
+            email: email,
+            password: password,
+        };
+        if (!email || !password) {
+            toast.error('Please fill in all fields!');
+            return;
+        }
         try {
             if (userDetails.email === "" || userDetails.password === "") {
                 toast.error('Please fill all the fields!');
@@ -51,33 +55,30 @@ const Login = () => {
         } catch (error) {
             // setLoginStat(false);
             // localStorage.setItem("isIn", 'false');
-            toast.error('Login Failed!');
+            toast.error('Login Failed!', {
+                position: "top-center",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
             console.log(error);
         }
-    }
+    };
 
-    function myFunction() {
-        var x = document.getElementById("myInput");
-        if (x.type === "password") {
-            document.getElementById("togglePassword").className = "far fa-eye-slash";
-            x.type = "text";
-        } else {
-            document.getElementById("togglePassword").className = "far fa-eye";
-            x.type = "password";
-        }
-    }
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            handleSubmit(event);
-        }
-    }
     
     return (
-        <div className='w-full h-screen flex items-center justify-center'>
-            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={userDetails.email} />
-            <div className='w-3/5 h-full bg-log p-4 flex flex-col items-start justify-start gap-56'>
-                <div className='flex items-center justify-start gap-2'>
+        <div className='w-full h-screen flex items-start justify-start'>
+            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} />
+            <div className='w-3/5 h-full bg-pink p-4 flex flex-col items-start justify-start gap-56'>
+                <div className='flex items-center justify-start gap-2 w-full'>
                     <div className='text-logo text-3xl font-bold'>
                         empsing
                     </div>
