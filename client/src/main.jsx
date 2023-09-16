@@ -9,6 +9,8 @@ import './index.css'
 import Layout from './layout.jsx';
 import Login from './components/login/login.jsx';
 
+import MapTest from './components/map/MapTest.jsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/mapTest",
+    element: <MapTest/>,
   }
 ]);
 
