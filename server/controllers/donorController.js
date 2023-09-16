@@ -12,7 +12,7 @@ class DonorController {
       const currentDate = new Date();
       const updatePromises = donorsToUpdate.map((donor) =>
         Donor.updateOne({ _id: donor._id }, { $set: { date: currentDate } })
-      );   
+      );
 
       // Execute all update operations
       await Promise.all(updatePromises);
@@ -34,22 +34,36 @@ class DonorController {
 
   getAllDonors = async (req, res) => {
     try {
-        const donorsWithEHR = await Donor.aggregate([
-            {
-                $lookup: {
-                    from: "ehrs",
-                    localField: "phone",
-                    foreignField: "phone",
-                    as: "ehrData"
-                }
-            }
-        ]);
+      const donorsWithEHR = await Donor.aggregate([
+        {
+          $lookup: {
+            from: "ehrs",
+            localField: "phone",
+            foreignField: "phone",
+            as: "ehrData"
+          }
+        }
+      ]);
 
-        res.status(200).json(donorsWithEHR);
+      res.status(200).json(donorsWithEHR);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     }
-}
+  }
+
+  profile = async (req, res) => {
+    const { email } = req.body;
+    try {
+      const donor = await Donor.findOne({ email: email });
+      if (donor) {
+        return res.status(200).json(donor);
+      }
+      return res.status(404).json({ message: "Donor not found" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  }
 }
 
 export default DonorController;

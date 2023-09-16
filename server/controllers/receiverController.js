@@ -87,6 +87,37 @@ class ReceiverController {
             res.status(404).json({ message: error.message });
         }
     }
+    addOrgan = async (req, res) => {
+        console.log(req.body)
+        const {email, organ, dateTime} = req.body;
+        try {
+            
+            const rec = await Receiver.findOne({email: email});
+            if(rec){
+                let find = false;
+                rec.organ.map((item) => {
+                    if(item.name == organ){
+                        find=true;
+                    }
+                })
+                if(find){
+                    console.log("Organ already exists")
+                    return res.status(202).json({message: "Organ already exists"})
+                } else{
+                    rec.organ.push({name: organ, expiry_date: dateTime})
+                    await rec.save();
+
+                    console.log("Organ added successfully")
+                    return res.status(200).json({message: "Organ added successfully"})
+                }
+            } else{
+                console.log("Receiver not found")
+                return res.status(404).json({message: "Receiver not found"})
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     
 }
 
