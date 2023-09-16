@@ -60,7 +60,7 @@ const receiverSchema = new mongoose.Schema({
   },
   wait_time : {
     type: String,
-    required: true,
+    required: false,
   },
   fcm_token: {
     type: String,
