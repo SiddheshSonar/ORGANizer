@@ -8,6 +8,7 @@ import {
 import './index.css'
 import Layout from './layout.jsx';
 import Login from './components/login/login.jsx';
+import Register from './components/register/register.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  }
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

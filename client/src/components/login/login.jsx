@@ -6,16 +6,17 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typewriter from 'typewriter-effect';
 import APIRequests from '../../api';
 import VerifyEmailForm from "./verifyOtp";
-import Logo from '../../assets/Organ_logo.png'
-import './login.css'
+import Logo from '../../assets/Organ_logo.png';
+import { useNavigate } from 'react-router-dom';
+import './login.css';
 
 
 const Login = () => {
-    const [modal, setModal] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [loginStat, setLoginStat] = useState(false)
+    const navigate = useNavigate();
+    // const [loginStat, setLoginStat] = useState(false)
     const [otp, setOtp] = useState(false)
 
     useEffect(() => {
@@ -55,16 +56,7 @@ const Login = () => {
         } catch (error) {
             // setLoginStat(false);
             // localStorage.setItem("isIn", 'false');
-            toast.error('Login Failed!', {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.error('Login Failed!');
             console.log(error);
         }
     };
@@ -83,11 +75,16 @@ const Login = () => {
                         <img
                             src={Logo}
                             alt=""
-                            width="60"
+                            width="100"
                         />
                     </div>
-                    <div className='text-maroon text-4xl font-bold'>
+                    <div className='flex flex-col items-start justify-start gap-1'>
+                        <div className='text-maroon text-5xl font-bold'>
                         ORGANizer
+                        </div>
+                        <div className='text-maroon text-sm font-semibold'>
+                        Don't take your organs to heaven; heaven knows we need them here!
+                        </div>
                     </div>
                 </div>
                 <div className='text-maroon text-3xl font-bold'>
@@ -146,7 +143,10 @@ const Login = () => {
                     </form>
                 </div>
                 <div>
-                    Not a member? <a className='underline decoration-solid text-sub' href="">Sign up</a>
+                    Not a member? <a className='underline decoration-solid text-sub cursor-pointer' 
+                    onClick={() => {
+                        navigate('/register')
+                    }}>Sign up</a>
                 </div>
                 <div className=''>
                     Terms and Conditions

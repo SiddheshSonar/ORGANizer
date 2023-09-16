@@ -9,6 +9,7 @@ export default {
       'white': '#FFFFFF',
       'red': '#D80032',
       'pink': '#F78CA2',
+      'lg-pink': '#ffadbe',
       'cream': '#F9DEC9',
       'maroon': '#3D0C11',
     },
