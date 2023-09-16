@@ -37,7 +37,14 @@ export default function VerifyEmailForm({ open, handleClose, email, type }) {
                 localStorage.setItem("profile", JSON.stringify(res.data));
                 toast.success('Login Successful!');
                 await timeout(2000);
-                window.location.pathname = '/home'
+                if (type === 'hospital') {
+                    window.location.pathname = '/transplant'
+
+                }
+                else {
+
+                    window.location.pathname = '/home'
+                }
             }
             handleClose();
         } catch (error) {
