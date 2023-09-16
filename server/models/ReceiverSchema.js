@@ -16,7 +16,8 @@ const receiverSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: false,
+    required: true,
+    unique:true,
   },
   otp: {
     type: Number,
