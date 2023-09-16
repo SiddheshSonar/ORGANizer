@@ -74,8 +74,9 @@ const donorSchema = new mongoose.Schema({
     required: true,
   },
   availability: {
-    type: String,
+    type: Boolean,
     required: true,
+    default: false,
   },
   date: {
     type: Date,
