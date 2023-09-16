@@ -8,7 +8,6 @@ const Profile = () => {
     const userType = profile.type;
     return (
         <div>
-            Profile
             {userType === 'donor' && <DonProf />}
             {userType === 'recipient' && <RecProf />}
             {userType === 'hospital' && <HosProf />}
