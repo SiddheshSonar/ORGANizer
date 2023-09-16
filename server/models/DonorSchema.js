@@ -25,16 +25,6 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
-    longitude: {
-      type: Number,
-      required: true,
-    },
-    latitude: {
-      type: Number,
-      required: true,
-    },
-  },
   organ: [String],
   tissue: [String],
   blood_group: {

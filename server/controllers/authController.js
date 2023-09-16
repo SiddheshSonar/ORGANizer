@@ -43,9 +43,10 @@ class AuthController {
                         .json({ message: "Hospital Registered Successfully!" });
                 }
             } else if (type == "donor") {
-                const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability } = req.body;
-                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history||!witnesses||!aadhar_card||!availability){
-                    return res.status(422).json({ error: "Please fill all fields!" });
+                const { name, email, password, phone, gender, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability, organ, tissue } = req.body;
+                if(!name||!email||!password||!phone||!gender||!blood_group||!age||!height||!weight||!health_history||!witnesses||!aadhar_card||!availability || !organ || !tissue){
+                    console.log(name, email, password, phone, gender, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability, organ, tissue )
+                    return res.status(422).json({ error: "Please fill all fields in donar!" });
                 }
                 const donorExist = await Donor.findOne({ email: email });
                 if (donorExist) {
@@ -56,7 +57,6 @@ class AuthController {
                         email: email,
                         password: password,
                         phone: phone,
-                        location: location,
                         blood_group: blood_group,
                         age: age,
                         height: height,
@@ -65,7 +65,10 @@ class AuthController {
                         witnesses: witnesses,
                         aadhar_card: aadhar_card,
                         availability: availability,
-                        gender: gender
+                        gender: gender,
+                        organ: organ,
+                        tissue: tissue,
+                        
                     });
                     await donor.save();
                     res.status(200).json({ message: "Donor Registered Successfully!" });
@@ -98,7 +101,7 @@ class AuthController {
             } else {
                 const { name, email, password } = req.body;
                 if (!name || !email || !password) {
-                    return res.status(422).json({ error: "Please fill all fields!" });
+                    return res.status(422).json({ error: "Please fill all fields! receiver" });
                 }
                 const userExist = await User.findOne({ email: email });
                 if (userExist) {
