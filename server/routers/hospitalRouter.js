@@ -13,7 +13,7 @@ const hC = new HospitalController();
 // uR.get("/location", auth, uC.getAll);
 // uR.post("/friend/:id", auth, uC.sendFriendRequest);
 // uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
-hR.post("/match", hC.matchHospital)
-hR.get('/', auth, hC.getAllHospitals);
+hR.post("/match", auth, hC.matchHospital)
+hR.get('/', auth, hC.getAllHospitals)
 
 export default hR;

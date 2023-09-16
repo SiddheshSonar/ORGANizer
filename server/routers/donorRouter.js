@@ -15,4 +15,6 @@ const dC = new DonorController();
 // uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
 dR.post("/addDateTo", dC.addDateTo);
 
+dR.get('/', dC.getAllDonors)
+
 export default dR;

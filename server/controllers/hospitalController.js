@@ -3,6 +3,8 @@ import Hospital from "../models/HospitalSchema.js";
 import Donor from "../models/DonorSchema.js";
 import Receiver from "../models/ReceiverSchema.js";
 import axios from "axios";
+import dotenv from 'dotenv';
+dotenv.config()
 
 class HospitalController {
     constructor() { }
@@ -12,10 +14,14 @@ class HospitalController {
             const apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json';
             const apiKey = process.env.MAP_APIKEY;
 
-            const { hospital_id, organ, expiry_hours } = req.body;
+            const hospital_id = req.userID;
+            console.log(hospital_id)
+            // const { hospital_id, organ, expiry_hours } = req.body;
+            const {  organ, expiry_hours } = req.body;
             const expiry_time = expiry_hours * 60 * 60;
             console.log(expiry_time);
             const hospital = await Hospital.findById(hospital_id);
+            console.log(hospital);
             if (!hospital) {
                 return res.status(404).json({ error: "Hospital not found" });
             }
@@ -35,7 +41,7 @@ class HospitalController {
                         key: apiKey
                     }
                 });
-                if (!dur.data.rows[0].elements[0].duration) {
+                if (!dur.data.rows[0] && !dur.data.rows[0].elements[0].duration) {
                     return null; // Remove invalid entries.
                 }
                 console.log(`Name: ${receiver.name}`);

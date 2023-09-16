@@ -23,7 +23,7 @@ const hospitalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  nodal_officer_details:{
+  nodal_officer_details:[{
     name: {
         type: String,
         required: true,
@@ -36,7 +36,7 @@ const hospitalSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-  },
+  }],
   location: {
     longitude: {
         type: Number,
