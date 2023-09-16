@@ -12,10 +12,12 @@ const donorSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   phone: {
     type: Number,
-    required: false,
+    required: true,
+    unique:true,
   },
   otp: {
     type: Number,
@@ -24,16 +26,6 @@ const donorSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  },
-  location: {
-    longitude: {
-      type: Number,
-      required: true,
-    },
-    latitude: {
-      type: Number,
-      required: true,
-    },
   },
   organ: [String],
   tissue: [String],
@@ -69,6 +61,10 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date:{
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Donor = mongoose.model("donor", donorSchema);

@@ -4,6 +4,7 @@ import ReactMapGL, { Marker } from 'react-map-gl';
 import { BiCurrentLocation, BiLocationPlus } from "react-icons/bi"
 import "./Map.css"
 import { toast } from 'react-toastify';
+import APIRequests from '../../api';
 
 
 // import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +17,8 @@ const MyMap = ({ lat, long, forReg, setLatLng }) => {
     const [location, setLocation] = React.useState({});
 
     // const users = useSelector(state => state.chat.users);
-    const users = null;
+    // const users = null;
+    const [users, setUsers] = useState(null);
     const fly = useCallback(({ longitude, latitude }) => {
         mapRef.current?.flyTo({ center: [longitude, latitude], duration: 2000 });
     }, []);
@@ -70,26 +72,16 @@ const MyMap = ({ lat, long, forReg, setLatLng }) => {
             return;
         }
 
-        // APIRequests.getHome().then((res) => {
-        //     if (res.status == 200) {
-        //         const { latitude, longitude } = res.data.location;
-        //         if (latitude && longitude) {
-        //             setHomeLocation(res.data.location);
-        //         }
-        //     }
-        // }).catch((err) => {
-        //     console.log("error fetching home", err)
-        // })
+        APIRequests.getHospitals().then((res) => {
+            if (res.status == 200) {
+                console.log("hospitals", res.data)
+                // dispatch(setUsers(res.data.users));
+                if (res.data) setUsers(res.data);
+            }
+        }).catch((err) => {
+            console.log("error fetching hospitals", err)
+        })
 
-        // APIRequests.getAllUsers().then((res) => {
-        //     console.log("users", res.data.users)
-        //     if (res.status == 200) {
-        //         dispatch(setUsers(res.data.users));
-        //     }
-        // }).catch((err) => {
-        //     console.log("error fetching users", err)
-        // }
-        // )
         getCurrentLocation();
     }, []);
 
@@ -101,8 +93,6 @@ const MyMap = ({ lat, long, forReg, setLatLng }) => {
         longitude: 72.83611545347907,
         zoom: 13
     });
-
-    const [homeLocation, setHomeLocation] = React.useState(null);
 
     return (
         <div style={{
@@ -143,13 +133,6 @@ const MyMap = ({ lat, long, forReg, setLatLng }) => {
                         <CustomMarker />
                     </Marker>
                     )}
-                {homeLocation && (
-                    <Marker
-                        latitude={homeLocation.latitude}
-                        longitude={homeLocation.longitude}
-                    >
-                    </Marker>
-                )}
 
                 {forReg && lat && long && (
                     <Marker
@@ -184,7 +167,7 @@ const MyMap = ({ lat, long, forReg, setLatLng }) => {
                                     }
                                 }
                             >
-                                <FriendMarker name={user.name} />
+                                <FriendMarker name={user.name ?? "Hospital X"} />
                             </Marker>
                         )
                     }

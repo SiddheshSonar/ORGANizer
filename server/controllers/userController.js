@@ -3,6 +3,7 @@ import admin from "firebase-admin";
 
 import serviceAccount from "../secrets/firebase-admin.json" assert { type: "json" };
 import Receiver from "../models/ReceiverSchema.js";
+import EHR from "../models/EHRSchema.js";
 
 class UserController {
     constructor() {
@@ -19,7 +20,7 @@ class UserController {
             console.log(user.fcm_token)
             if (user) {
                 let message = {
-                    notification: { title: "your title", body: "your message", }, token: user.fcm_token,
+                    notification: { title: title, body: body }, token: user.fcm_token,
                 };
 
                 // const response = await admin.messaging().sendToDevice(user.fcm_token, payload, options);
@@ -31,6 +32,19 @@ class UserController {
             }
         } catch (error) {
 
+        }
+    }
+
+    test = async (req, res) => {
+        try {
+            const ehrData = req.body;
+    
+            const newEHR = new EHR(ehrData);
+            await newEHR.save();
+    
+            res.status(201).send({ message: 'EHR record successfully added!' });
+        } catch (error) {
+            res.status(500).send({ message: 'Error inserting EHR record', error: error.message });
         }
     }
 

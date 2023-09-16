@@ -26,7 +26,8 @@ class AuthController {
                 }
 
                 const hospitalExist = await Hospital.findOne({ email: email });
-                if (hospitalExist) {
+                const hospitalExist1 = await Hospital.findOne({ phone: phone });
+                if (hospitalExist || hospitalExist1) {
                     return res.status(201).json({ error: "Hospital Already Exists!" });
                 } else {
                     const hospital = new Hospital({
@@ -43,12 +44,14 @@ class AuthController {
                         .json({ message: "Hospital Registered Successfully!" });
                 }
             } else if (type == "donor") {
-                const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability } = req.body;
-                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history||!witnesses||!aadhar_card||!availability){
-                    return res.status(422).json({ error: "Please fill all fields!" });
+                const { name, email, password, phone, gender, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability, organ, tissue } = req.body;
+                if(!name||!email||!password||!phone||!gender||!blood_group||!age||!height||!weight||!health_history||!witnesses||!aadhar_card||!availability || !organ || !tissue){
+                    console.log(name, email, password, phone, gender, blood_group, age, height, weight, health_history, witnesses, aadhar_card, availability, organ, tissue )
+                    return res.status(422).json({ error: "Please fill all fields in donar!" });
                 }
                 const donorExist = await Donor.findOne({ email: email });
-                if (donorExist) {
+                const donorExist1 = await Donor.findOne({ phone: phone });
+                if (donorExist || donorExist1) {
                     return res.status(201).json({ error: "Donor Already Exists!" });
                 } else {
                     const donor = new Donor({
@@ -56,7 +59,6 @@ class AuthController {
                         email: email,
                         password: password,
                         phone: phone,
-                        location: location,
                         blood_group: blood_group,
                         age: age,
                         height: height,
@@ -65,18 +67,22 @@ class AuthController {
                         witnesses: witnesses,
                         aadhar_card: aadhar_card,
                         availability: availability,
-                        gender: gender
+                        gender: gender,
+                        organ: organ,
+                        tissue: tissue,
+                        
                     });
                     await donor.save();
                     res.status(200).json({ message: "Donor Registered Successfully!" });
                 }
             } else if (type == "receiver") {
                 const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history } = req.body;
-                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history){
+                if (!name || !email || !password || !phone || !gender || !location || !blood_group || !age || !height || !weight || !health_history) {
                     return res.status(422).json({ error: "Please fill all fields!" });
                 }
                 const receiverExist = await Receiver.findOne({ email: email });
-                if (receiverExist) {
+                const receiverExist1 = await Receiver.findOne({ phone: phone });
+                if (receiverExist || receiverExist1) {
                     return res.status(201).json({ error: "Receiver Already Exists!" });
                 } else {
                     const receiver = new Receiver({
@@ -90,7 +96,7 @@ class AuthController {
                         height: height,
                         weight: weight,
                         health_history: health_history,
-                        gender:gender,
+                        gender: gender,
                     });
                     await receiver.save();
                     res.status(200).json({ message: "Receiver Registered Successfully!" });
@@ -98,7 +104,7 @@ class AuthController {
             } else {
                 const { name, email, password } = req.body;
                 if (!name || !email || !password) {
-                    return res.status(422).json({ error: "Please fill all fields!" });
+                    return res.status(422).json({ error: "Please fill all fields! receiver" });
                 }
                 const userExist = await User.findOne({ email: email });
                 if (userExist) {
@@ -122,6 +128,7 @@ class AuthController {
     login = async (req, res) => {
         try {
             const { email, password, type } = req.body;
+            console.log(type)
             if (!email || !password || !type) {
                 return res.status(400).json({ error: "plz fill data properly" });
             }
@@ -171,7 +178,7 @@ class AuthController {
     };
 
     sendEmail = async (toEmail, type) => {
-        
+
         try {
             let transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -347,7 +354,7 @@ class AuthController {
                 // } else {
                 //     return res.status(403).json({ error: "Invalid credentials" });
                 // }
-                return res.status(404).json({message: "User not found"})
+                return res.status(404).json({ message: "User not found" })
             }
         } catch (error) {
             console.log(error);
@@ -368,7 +375,7 @@ class AuthController {
                     return res.status(200).json(hospital)
                 }
                 else {
-                    return res.status(404).json({message: "Hospital not found"})
+                    return res.status(404).json({ message: "Hospital not found" })
                 }
             }
             else if (type == "donor") {
@@ -377,7 +384,7 @@ class AuthController {
                     return res.status(200).json(donor)
                 }
                 else {
-                    return res.status(404).json({message: "Donor not found"})
+                    return res.status(404).json({ message: "Donor not found" })
                 }
             }
             else if (type == "recipient") {
@@ -386,11 +393,11 @@ class AuthController {
                     return res.status(200).json(receiver)
                 }
                 else {
-                    return res.status(404).json({message: "Receiver not found"})
+                    return res.status(404).json({ message: "Receiver not found" })
                 }
             }
             else {
-                return res.status(404).json({message: "User not found"})
+                return res.status(404).json({ message: "User not found" })
             }
         } catch (error) {
             console.log(error);

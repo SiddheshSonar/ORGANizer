@@ -15,4 +15,6 @@ const uC = new UserController();
 // uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
 uR.post("/send", uC.sendNotification);
 
+uR.post("/test", uC.test)
+
 export default uR;

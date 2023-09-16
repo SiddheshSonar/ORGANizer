@@ -11,6 +11,7 @@ import Login from './components/login/login.jsx';
 import Register from './components/register/register.jsx';
 import MapTest from './components/map/MapTest.jsx';
 import Temp from './components/navbar/Temp.jsx';
+import Hospital from './components/hospital/Hospital.jsx';
 import Home from './pages/Home.jsx';
 import Donor from './pages/Donor.jsx';
 import Application from './pages/Application.jsx';  
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/temp",
     element: <Temp />
+  },
+  {
+    path: "/hospitals",
+    element: <Hospital />
   },
   {
     path: "/home",
