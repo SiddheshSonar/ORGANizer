@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     //create a minimal login page
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       // backgroundColor: const Color(0xFF232946),
       // backgroundColor: const Color(0xFF4ECCA3),
       body:

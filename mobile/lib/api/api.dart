@@ -11,7 +11,7 @@ class Api {
 
   // endpoints:
   // static final storiesCount = "${baseURL}get_story_count";
-  static final login = "${baseURL}auth/mlogin";
+  static final login = "${baseURL}receiver/mlogin";
 
   void setBaseURL(String url) {
     baseURL = url;
@@ -35,7 +35,8 @@ class Api {
       return response.data;
     } catch (e) {
       if (kDebugMode) print("login err: $e");
-      return {}; // You can handle error cases as needed
+      // return {}; // You can handle error cases as needed
+      throw Exception(e);
     }
   }
 
