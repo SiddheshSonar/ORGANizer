@@ -15,5 +15,7 @@ authRouter.post("/login", aC.login);
 
 authRouter.post("/otp", aC.verifyOTP);
 
+authRouter.post("/getdata", aC.getData);
+
 export default authRouter;
 
