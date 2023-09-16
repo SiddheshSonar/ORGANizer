@@ -71,8 +71,8 @@ class AuthController {
                     res.status(200).json({ message: "Donor Registered Successfully!" });
                 }
             } else if (type == "receiver") {
-                const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history, wait_time, condition } = req.body;
-                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history||!wait_time||!condition){
+                const { name, email, password, phone, gender, location, blood_group, age, height, weight, health_history } = req.body;
+                if(!name||!email||!password||!phone||!gender||!location||!blood_group||!age||!height||!weight||!health_history){
                     return res.status(422).json({ error: "Please fill all fields!" });
                 }
                 const receiverExist = await Receiver.findOne({ email: email });
@@ -90,9 +90,7 @@ class AuthController {
                         height: height,
                         weight: weight,
                         health_history: health_history,
-                        wait_time: wait_time,
                         gender:gender,
-                        condition: condition,
                     });
                     await receiver.save();
                     res.status(200).json({ message: "Receiver Registered Successfully!" });
