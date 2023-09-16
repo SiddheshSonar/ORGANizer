@@ -4,9 +4,9 @@ import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typewriter from 'typewriter-effect';
-import axios from 'axios';
 import APIRequests from '../../api';
-import VerifyEmailForm from "./verifyOtp"
+import VerifyEmailForm from "./verifyOtp";
+import Logo from '../../assets/Organ_logo.png'
 import './login.css'
 
 
@@ -79,21 +79,25 @@ const Login = () => {
             <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} />
             <div className='w-3/5 h-full bg-pink p-4 flex flex-col items-start justify-start gap-56'>
                 <div className='flex items-center justify-start gap-2 w-full'>
-                    <div className='text-logo text-3xl font-bold'>
-                        empsing
-                    </div>
                     <div>
                         <img
-                            src=""
+                            src={Logo}
                             alt=""
-                            width="30"
+                            width="60"
                         />
                     </div>
+                    <div className='text-maroon text-4xl font-bold'>
+                        ORGANizer
+                    </div>
                 </div>
-                <div className='text-logo text-3xl font-bold'>
+                <div className='text-maroon text-3xl font-bold'>
                     <Typewriter
                         options={{
-                            strings: ['Welcome to empsing!', 'Your one stop solution for all your needs!', 'Get started now!'],
+                            strings: ['Give the gift of life. Be an organ donor and leave behind the legacy of saving lives.', 
+                            'The power to save a life lies within you. Be an organ donor and be a hero.', 
+                            "Be someone's hero. Register as an organ donor today.",
+                            "You have the power to make a difference even after you're gone. ",
+                        ],
                             delay: 50,
                             autoStart: true,
                             loop: true,
@@ -135,7 +139,7 @@ const Login = () => {
                             </IconButton>
                         </div>
                         <input
-                            className='p-2.5 w-24 bg-sub text-white rounded-xl cursor-pointer hover:bg-sub-dark'
+                            className='p-2.5 w-24 bg-red text-white rounded-xl cursor-pointer hover:bg-sub-dark'
                             type="submit"
                             value="Login"
                         />

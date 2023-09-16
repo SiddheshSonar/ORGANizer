@@ -6,9 +6,11 @@ export default {
   ],
   theme: {
     colors: {
+      'white': '#FFFFFF',
       'red': '#D80032',
       'pink': '#F78CA2',
       'cream': '#F9DEC9',
+      'maroon': '#3D0C11',
     },
     extend: {
       boxShadow: {
