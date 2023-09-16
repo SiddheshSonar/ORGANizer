@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 
 
-export default function VerifyEmailForm({ open, handleClose, email }) {
+export default function VerifyEmailForm({ open, handleClose, email, type }) {
     const [pin, setPin] = useState("");
     const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
             const data = {
                 email: email,
                 otp: pin,
+                type: type,
             };
             const res = await APIRequests.verifyOTP(data);
             if (res.status === 200) {

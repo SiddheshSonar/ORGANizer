@@ -6,17 +6,35 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Typewriter from 'typewriter-effect';
 import APIRequests from '../../api';
 import VerifyEmailForm from "./verifyOtp";
-import Logo from '../../assets/Organ_logo.png'
-import './login.css'
-
+import { TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import Logo from '../../assets/Organ_logo.png';
+import { useNavigate } from 'react-router-dom';
+import './login.css';
 
 const Login = () => {
-    const [modal, setModal] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [type, setType] = useState(''); 
     const [showPassword, setShowPassword] = useState(false);
-    const [loginStat, setLoginStat] = useState(false)
+    const navigate = useNavigate();
+    // const [loginStat, setLoginStat] = useState(false)
     const [otp, setOtp] = useState(false)
+
+    const users = [
+        {
+            value: 'donor',
+            label: 'Donor',
+        },
+        {
+            value: 'recipient',
+            label: 'Recipient',
+        },
+        {
+            value: 'hospital',
+            label: 'Hospital',
+        },
+    ];
 
     useEffect(() => {
         if (localStorage.getItem("isIn") === 'true') {
@@ -28,13 +46,19 @@ const Login = () => {
         return new Promise(res => setTimeout(res, delay));
     }
 
+    useEffect(() => {
+        console.log(type)
+    }, [type])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userDetails = {
             email: email,
             password: password,
+            type: type,
         };
-        if (!email || !password) {
+        console.log(userDetails)
+        if (!email || !password || !type) {
             toast.error('Please fill in all fields!');
             return;
         }
@@ -55,16 +79,7 @@ const Login = () => {
         } catch (error) {
             // setLoginStat(false);
             // localStorage.setItem("isIn", 'false');
-            toast.error('Login Failed!', {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.error('Login Failed!');
             console.log(error);
         }
     };
@@ -76,18 +91,23 @@ const Login = () => {
     
     return (
         <div className='w-full h-screen flex items-start justify-start'>
-            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} />
+            <VerifyEmailForm open={otp} handleClose={() => setOtp(false)} email={email} type={type} />
             <div className='w-3/5 h-full bg-pink p-4 flex flex-col items-start justify-start gap-56'>
                 <div className='flex items-center justify-start gap-2 w-full'>
                     <div>
                         <img
                             src={Logo}
                             alt=""
-                            width="60"
+                            width="100"
                         />
                     </div>
-                    <div className='text-maroon text-4xl font-bold'>
+                    <div className='flex flex-col items-start justify-start gap-1'>
+                        <div className='text-maroon text-5xl font-bold'>
                         ORGANizer
+                        </div>
+                        <div className='text-maroon text-sm font-semibold'>
+                        Don't take your organs to heaven; heaven knows we need them here!
+                        </div>
                     </div>
                 </div>
                 <div className='text-maroon text-3xl font-bold'>
@@ -109,6 +129,27 @@ const Login = () => {
             <div className='w-2/5 h-full bg-white flex flex-col items-center justify-center gap-4'>
                 <div className='text-3xl font-bold'>
                     Get Started
+                </div>
+                <div className='flex items-center justify-center gap-2'>
+                    <div>
+                        Tell us who you are:
+                    </div>
+                    <div>
+                    <TextField
+                        label="Identity"
+                        select
+                        sx={{ width: '150px' }}
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        variant="outlined"
+                    >
+                        {users.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    </div>
                 </div>
                 <div className='flex items-center justify-center w-full'>
                     <form className='flex flex-col items-center justify-center gap-4 w-3/4' onSubmit={handleSubmit}>
@@ -146,7 +187,10 @@ const Login = () => {
                     </form>
                 </div>
                 <div>
-                    Not a member? <a className='underline decoration-solid text-sub' href="">Sign up</a>
+                    Not a member? <a className='underline decoration-solid text-sub cursor-pointer' 
+                    onClick={() => {
+                        navigate('/register')
+                    }}>Sign up</a>
                 </div>
                 <div className=''>
                     Terms and Conditions

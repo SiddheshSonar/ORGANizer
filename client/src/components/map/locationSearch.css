@@ -10,6 +10,7 @@
 .autocomplete-dropdown-container {
     position: fixed;
     z-index: 1000;
+    width: 100%;
 
     /* background-color: #ffffff; */
 }

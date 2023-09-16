@@ -8,8 +8,9 @@ import {
 import './index.css'
 import Layout from './layout.jsx';
 import Login from './components/login/login.jsx';
-
+import Register from './components/register/register.jsx';
 import MapTest from './components/map/MapTest.jsx';
+import Temp from './components/navbar/Temp.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +22,16 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
+    path: "/register",
+    element: <Register />,
+  },
+  {
     path: "/mapTest",
     element: <MapTest/>,
+  },
+  {
+    path: "/temp",
+    element: <Temp />
   }
 ]);
 
