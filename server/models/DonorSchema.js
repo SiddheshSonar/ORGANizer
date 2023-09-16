@@ -17,7 +17,7 @@ const donorSchema = new mongoose.Schema({
   phone: {
     type: Number,
     required: true,
-    unique:true,
+    unique: true,
   },
   otp: {
     type: Number,
@@ -27,8 +27,24 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  organ: [String],
-  tissue: [String],
+  organ: [{
+    name: {
+      type: String,
+    },
+    expiry_date: {
+      type: Date,
+      default: null
+    },
+  }],
+  tissue: [{
+    name: {
+      type: String,
+    },
+    expiry_date: {
+      type: Date,
+      default: null
+    },
+  }],
   blood_group: {
     type: String,
     required: true,
@@ -58,10 +74,11 @@ const donorSchema = new mongoose.Schema({
     required: true,
   },
   availability: {
-    type: String,
+    type: Boolean,
     required: true,
+    default: false,
   },
-  date:{
+  date: {
     type: Date,
     default: Date.now
   }

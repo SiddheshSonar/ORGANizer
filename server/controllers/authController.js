@@ -54,6 +54,14 @@ class AuthController {
                 if (donorExist || donorExist1) {
                     return res.status(201).json({ error: "Donor Already Exists!" });
                 } else {
+                    let temp =[]
+                    for(let i=0;i<organ.length;i++){
+                        temp.push({name:organ[i]})
+                    }
+                    let tissueTemp =[]
+                    for(let i=0;i<tissue.length;i++){
+                        tissueTemp.push({name:tissue[i]})
+                    }
                     const donor = new Donor({
                         name: name,
                         email: email,
@@ -68,8 +76,8 @@ class AuthController {
                         aadhar_card: aadhar_card,
                         availability: availability,
                         gender: gender,
-                        organ: organ,
-                        tissue: tissue,
+                        organ: temp,
+                        tissue: tissueTemp,
                         
                     });
                     await donor.save();
