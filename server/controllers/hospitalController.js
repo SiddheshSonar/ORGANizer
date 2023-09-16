@@ -59,16 +59,13 @@ class HospitalController {
                     };
                 }
                 return null;
-
             }));
 
             // Remove null entries and sort by duration in ascending order.
             const finalReceiverArr = filteredReceiverArr.filter((receiver) => receiver !== null);
             finalReceiverArr.sort((a, b) => a.duration - b.duration);
-
             //send only ._doc
             const rr = finalReceiverArr.map((receiver) => receiver._doc);
-
             res.status(200).json(rr);
         } catch (err) {
             console.error(err);

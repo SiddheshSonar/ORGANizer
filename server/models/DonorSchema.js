@@ -27,16 +27,6 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
-    longitude: {
-      type: Number,
-      required: true,
-    },
-    latitude: {
-      type: Number,
-      required: true,
-    },
-  },
   organ: [String],
   tissue: [String],
   blood_group: {
@@ -71,6 +61,10 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date:{
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Donor = mongoose.model("donor", donorSchema);

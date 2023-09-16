@@ -27,7 +27,6 @@ const RecForm = () => {
     weight: "",
     height: "",
     health_history: "",
-    condition: "",
   });
 
   useEffect(() => {
