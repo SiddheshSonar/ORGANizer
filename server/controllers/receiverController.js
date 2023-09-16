@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Receiver from "../models/ReceiverSchema.js";
-
+import jwt from "jsonwebtoken";
 class ReceiverController {
     constructor() { }
     login = async (req, res) => {
@@ -13,7 +13,7 @@ class ReceiverController {
                     await receiverExists.save();
                     const secretKey = process.env.JWTkey;
                     const token = jwt.sign(
-                        { uid: receiverLogin._id, name: receiverLogin.name },
+                        { uid: receiverExists._id, name: receiverExists.name },
                         secretKey,
                         {
                             expiresIn: "7d",
@@ -21,9 +21,9 @@ class ReceiverController {
                     );
                     return res.status(200).json({
                         token: token,
-                        email: receiverLogin.email,
-                        name: receiverLogin.name,
-                        uid: receiverLogin._id,
+                        email: receiverExists.email,
+                        name: receiverExists.name,
+                        uid: receiverExists._id,
                     });
                 } else{
                     res.status(401).send({ message: "Incorrect password" })
