@@ -16,6 +16,7 @@ import Home from './pages/Home.jsx';
 import Donor from './pages/Donor.jsx';
 import Application from './pages/Application.jsx';
 import Transplant from './pages/Transplant.jsx';
+import Profile from './pages/Profile.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
 import Kommunicate from '../src/components/kommunicate/kommunicate.jsx';
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/transplant",
     element: <Transplant />
+  },
+  {
+    path: "/profile",
+    element: <Profile />
   },
 ]);
 
