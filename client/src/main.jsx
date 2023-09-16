@@ -11,6 +11,8 @@ import Login from './components/login/login.jsx';
 import Register from './components/register/register.jsx';
 import MapTest from './components/map/MapTest.jsx';
 import Temp from './components/navbar/Temp.jsx';
+import Home from './pages/Home.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +34,11 @@ const router = createBrowserRouter([
   {
     path: "/temp",
     element: <Temp />
-  }
+  },
+  {
+    path: "/home",
+    element: <Home />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

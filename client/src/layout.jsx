@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 // import NavB from './auth/components/navB';
 import 'react-toastify/dist/ReactToastify.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+import NavB from './components/navbar/NavB';
 // const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -14,6 +14,7 @@ export const metadata = {
 const Layout = ({ children }) => {
     return (
         <>
+            <NavB />
             <ToastContainer
                 position="top-center"
                 autoClose={1500}

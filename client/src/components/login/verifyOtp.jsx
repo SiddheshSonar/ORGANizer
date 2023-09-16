@@ -32,7 +32,7 @@ export default function VerifyEmailForm({ open, handleClose, email, type }) {
                 localStorage.setItem("isIn", 'true');
                 localStorage.setItem("profile", JSON.stringify(res.data));
                 toast.success('Login Successful!');
-                navigate('/')
+                window.location.pathname = '/home'
             }
             handleClose();
         } catch (error) {
