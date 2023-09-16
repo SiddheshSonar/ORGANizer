@@ -37,6 +37,37 @@ class ReceiverController {
             res.status(500).send({ message: "Internal server error" })
         }
     }
+
+    getFCMToken = async (req, res) => {
+        try {
+            const uid = req.userID;
+            const receiver = await Receiver.findById(uid);
+            if (receiver) {
+                return res.status(200).json({ fcm_token: receiver.fcm_token })
+            }
+            return res.status(404).json({ message: "Receiver not found" })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: "Internal server error" })
+            
+        }
+    }
+    updateFCMToken = async (req, res) => {
+        try {
+            const uid = req.userID;
+            const { fcm_token } = req.body;
+            const receiver = await Receiver.findById(uid);
+            if (receiver) {
+                receiver.fcm_token = fcm_token;
+                await receiver.save();
+                return res.status(200).json({ message: "FCM Token updated" })
+            }
+            return res.status(404).json({ message: "Receiver not found" })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: "Internal server error" })
+        }
+    }
 }
 
 export default ReceiverController;

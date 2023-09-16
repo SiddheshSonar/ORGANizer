@@ -19,7 +19,7 @@ class UserController {
             console.log(user.fcm_token)
             if (user) {
                 let message = {
-                    notification: { title: "your title", body: "your message", }, token: user.fcm_token,
+                    notification: { title: title, body: body }, token: user.fcm_token,
                 };
 
                 // const response = await admin.messaging().sendToDevice(user.fcm_token, payload, options);

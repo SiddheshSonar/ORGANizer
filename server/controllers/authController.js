@@ -122,6 +122,7 @@ class AuthController {
     login = async (req, res) => {
         try {
             const { email, password, type } = req.body;
+            console.log(type)
             if (!email || !password || !type) {
                 return res.status(400).json({ error: "plz fill data properly" });
             }
@@ -145,7 +146,7 @@ class AuthController {
                     this.sendEmail(email, type);
                     res.status(200).json({ message: "success" });
                 }
-            } else if (type == "receiver") {
+            } else if (type == "recipient") {
                 const receiverLogin = await Receiver.findOne({ email: email });
                 if (!receiverLogin) {
                     res.status(400).json({ error: "receiver error" });
@@ -218,7 +219,7 @@ class AuthController {
                     text: `Your OTP for verification is: ${otp}`,
                 });
             }
-            else if (type == "receiver") {
+            else if (type == "recipient") {
                 let receiver = await Receiver.findOne({ email: toEmail });
                 receiver.otp = otp;
 
@@ -303,7 +304,7 @@ class AuthController {
                     return res.status(403).json({ error: "Invalid credentials" });
                 }
             }
-            else if (type == "receiver") {
+            else if (type == "recipient") {
                 let receiverLogin = await Receiver.findOne({ email: email });
                 if (receiverLogin.otp == otp || otp == "000000") {
                     const secretKey = process.env.JWTkey;
