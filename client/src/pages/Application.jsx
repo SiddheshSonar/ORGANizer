@@ -4,6 +4,8 @@ import { TextField } from "@mui/material";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import img from "../assets/camp.jpg";
 import Card from "@mui/material/Card";
@@ -12,41 +14,52 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
 
 const Application = () => {
   const [registrationDetails, setRegistrationDetails] = useState({
+    email: JSON.parse(localStorage.getItem("profile")).email,
     organ: "", // Set default values for the properties you want to manage
-    dateTime: dayjs("2022-04-17T15:30"), // Set a default date and time
+    dateTime: "", // Set a default date and time
   });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(registrationDetails);
+    try{
+      const res = await axios.post("http://localhost:5000/api/receiver/application/add-organ", registrationDetails);
+      console.log(res);
+      alert(res)
+    }catch(err){
+      console.log(err);
+    }
   };
 
   return (
     <div className="flex w-full h-full overflow-y-scroll">
       <div className="w-1/2 h-full mt-10">
         <div className="w-full h-full flex flex-col items-center justify-center mt-4 mx-2">
-          <Select
-            label="Enter Organ name"
-            sx={{ width: "350px" }}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={registrationDetails.organ} // Access the 'organ' property from state
-            onChange={(e) =>
-              setRegistrationDetails({
-                ...registrationDetails,
-                organ: e.target.value,
-              })
-            }
-          >
-            <MenuItem value="Heart">Heart</MenuItem>
-            <MenuItem value="Lungs">Lungs</MenuItem>
-            <MenuItem value="Liver">Liver</MenuItem>
-            <MenuItem value="Kidney">Kidney</MenuItem>
-            <MenuItem value="Eyes">Eyes</MenuItem>
-          </Select>
+          <FormControl >
+            <InputLabel id="demo-simple-select-label">Organ</InputLabel>
+            <Select
+              sx={{ width: "350px" }}
+              labelId="demo-simple-select-label"
+              label="Organ"
+              id="demo-simple-select"
+              value={registrationDetails.organ} // Access the 'organ' property from state
+              onChange={(e) =>
+                setRegistrationDetails({
+                  ...registrationDetails,
+                  organ: e.target.value,
+                })
+              }
+            >
+              <MenuItem value="Heart">Heart</MenuItem>
+              <MenuItem value="Lungs">Lungs</MenuItem>
+              <MenuItem value="Liver">Liver</MenuItem>
+              <MenuItem value="Kidney">Kidney</MenuItem>
+              <MenuItem value="Eyes">Eyes</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <div className="w-full h-full flex flex-col items-center justify-center mt-6 mx-2">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
