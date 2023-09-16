@@ -12,6 +12,8 @@ import Register from './components/register/register.jsx';
 import MapTest from './components/map/MapTest.jsx';
 import Temp from './components/navbar/Temp.jsx';
 import Hospital from './components/hospital/Hospital.jsx';
+import Home from './pages/Home.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,11 @@ const router = createBrowserRouter([
   {
     path: "/hospitals",
     element: <Hospital />
-  }
+  },
+  {
+    path: "/home",
+    element: <Home />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

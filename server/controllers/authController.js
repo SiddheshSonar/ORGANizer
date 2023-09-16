@@ -278,6 +278,7 @@ class AuthController {
                         email: hospitalLogin.email,
                         name: hospitalLogin.name,
                         uid: hospitalLogin._id,
+                        type: "hospital"
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
@@ -299,6 +300,7 @@ class AuthController {
                         email: donorLogin.email,
                         name: donorLogin.name,
                         uid: donorLogin._id,
+                        type: "donor",
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
@@ -320,6 +322,7 @@ class AuthController {
                         email: receiverLogin.email,
                         name: receiverLogin.name,
                         uid: receiverLogin._id,
+                        type: "recipient",
                     });
                 } else {
                     return res.status(403).json({ error: "Invalid credentials" });
@@ -355,6 +358,45 @@ class AuthController {
 
     generateOTP() {
         return crypto.randomInt(100000, 999999);
+    }
+
+    getData = async (req, res) => {
+        const { email, type } = req.body
+        try {
+            if (type == "hospital") {
+                let hospital = await Hospital.findOne({ email: email });
+                if (hospital) {
+                    return res.status(200).json(hospital)
+                }
+                else {
+                    return res.status(404).json({message: "Hospital not found"})
+                }
+            }
+            else if (type == "donor") {
+                let donor = await Donor.findOne({ email: email });
+                if (donor) {
+                    return res.status(200).json(donor)
+                }
+                else {
+                    return res.status(404).json({message: "Donor not found"})
+                }
+            }
+            else if (type == "recipient") {
+                let receiver = await Receiver.findOne({ email: email });
+                if (receiver) {
+                    return res.status(200).json(receiver)
+                }
+                else {
+                    return res.status(404).json({message: "Receiver not found"})
+                }
+            }
+            else {
+                return res.status(404).json({message: "User not found"})
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: "Interal Server Error" });
+        }
     }
 }
 

@@ -38,6 +38,9 @@ class APIRequests {
   static async getHospitals() {
     return await API.get("/hospital");
   }
+  static async getUser(data) {
+    return await API.post("/auth/getdata", data);
+  }
 }
 
 export default APIRequests;
