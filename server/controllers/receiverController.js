@@ -11,7 +11,20 @@ class ReceiverController {
                 if(password==receiverExists.password){
                     receiverExists.fcm_token = fcm_token;
                     await receiverExists.save();
-                    res.status(200).send({ message: "Login successful"})
+                    const secretKey = process.env.JWTkey;
+                    const token = jwt.sign(
+                        { uid: receiverLogin._id, name: receiverLogin.name },
+                        secretKey,
+                        {
+                            expiresIn: "7d",
+                        }
+                    );
+                    return res.status(200).json({
+                        token: token,
+                        email: receiverLogin.email,
+                        name: receiverLogin.name,
+                        uid: receiverLogin._id,
+                    });
                 } else{
                     res.status(401).send({ message: "Incorrect password" })
                 }
