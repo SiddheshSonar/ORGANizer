@@ -71,6 +71,10 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  date:{
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Donor = mongoose.model("donor", donorSchema);
