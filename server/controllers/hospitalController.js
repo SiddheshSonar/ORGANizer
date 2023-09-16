@@ -15,25 +15,41 @@ class HospitalController {
             const apiKey = process.env.MAP_APIKEY;
 
             const hospital_id = req.userID;
-            console.log(hospital_id)
+            // console.log(hospital_id)
             // const { hospital_id, organ, expiry_hours } = req.body;
             const { organ, expiry_hours } = req.body;
             const expiry_time = expiry_hours * 60 * 60;
-            console.log(expiry_time);
+            // console.log(expiry_time);
             const hospital = await Hospital.findById(hospital_id);
-            console.log(hospital);
+            // console.log(hospital);
             if (!hospital) {
                 return res.status(404).json({ error: "Hospital not found" });
             }
             const { location } = hospital;
             const { latitude, longitude } = location;
 
-            const receiver = await Receiver.find();
+            // const receiver = await Receiver.find();
+            const receiver = await Receiver.aggregate([
+                {
+                    $lookup: {
+                        from: "ehrs",
+                        localField: "phone",
+                        foreignField: "phone",
+                        as: "ehrData"
+                    }
+                }
+            ]);
+
             let receiverArr = receiver.filter((receiver) => {
                 return receiver.organ.includes(organ);
             });
 
+            console.log("Receiver Array: ", receiverArr)
+
             const filteredReceiverArr = await Promise.all(receiverArr.map(async (receiver) => {
+
+                console.log(`Receiver: ${receiver.location.latitude}, ${receiver.location.longitude}`);
+
                 let dur = await axios.get(apiUrl, {
                     params: {
                         origins: `${latitude},${longitude}`,
@@ -41,8 +57,10 @@ class HospitalController {
                         key: apiKey
                     }
                 });
+                console.log(dur.data.rows[0].elements[0].duration);
+
                 if (!dur.data.rows[0] && !dur.data.rows[0].elements[0].duration) {
-                    return null; // Remove invalid entries.
+                    // return null; // Remove invalid entries.
                 }
                 console.log(`Name: ${receiver.name}`);
                 const durationValue = dur.data.rows[0].elements[0].duration.value;
@@ -53,20 +71,33 @@ class HospitalController {
                 console.log(`Is Within Expiry: ${isWithinExpiry}`);
 
                 if (isWithinExpiry) {
+                    console.log("Within Expiry tt");
+
+                    const test = {
+                        ...receiver,
+                        duration: durationValue // Include duration in the receiver object.
+                    }
+
+                    console.log("Test: ", test);
+
                     return {
                         ...receiver,
                         duration: durationValue // Include duration in the receiver object.
                     };
                 }
-                return null;
+                // return null;
             }));
 
+            console.log("Filtered Receiver Array: ", filteredReceiverArr);
+            
             // Remove null entries and sort by duration in ascending order.
             const finalReceiverArr = filteredReceiverArr.filter((receiver) => receiver !== null);
             finalReceiverArr.sort((a, b) => a.duration - b.duration);
+            console.log("Final Receiver Array: ", finalReceiverArr);
             //send only ._doc
-            const rr = finalReceiverArr.map((receiver) => receiver._doc);
-            res.status(200).json(rr);
+            // const rr = finalReceiverArr.map((receiver) => receiver._doc);
+            // console.log("RR: ", rr);
+            res.status(200).json(finalReceiverArr);
         } catch (err) {
             console.error(err);
             res.status(500).send(err);

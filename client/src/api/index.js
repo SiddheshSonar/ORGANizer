@@ -41,6 +41,16 @@ class APIRequests {
   static async getUser(data) {
     return await API.post("/auth/getdata", data);
   }
+  static async getDonors() {
+    return await API.get("/donor");
+  }
+  static async getMatches(data) {
+    // data: {
+      // organ: "Heart",
+      // expiry_hours: 24,
+    // }
+    return await API.post("/hospital/match", data);
+  }
 }
 
 export default APIRequests;
