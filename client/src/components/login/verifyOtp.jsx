@@ -30,21 +30,13 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
             if (res.status === 200) {
                 localStorage.setItem("isIn", 'true');
                 localStorage.setItem("profile", JSON.stringify(res.data));
-                toast.success('Login Successful!', {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    theme: "dark",
-                });
+                toast.success('Login Successful!');
                 navigate('/')
             }
             handleClose();
         } catch (error) {
             console.error(error);
-            alert('Invalid OTP');
+            toast.error('Invalid OTP!');
         }
     };
 

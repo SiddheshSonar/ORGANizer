@@ -117,7 +117,7 @@ class AuthController {
                 return res.status(403).json({ error: "Invalid credentials" });
             }
         } catch (error) {
-            console.log(err);
+            console.log(error);
             return res.status(500).json({ error: "Interal Server Error" });
         }
     }
