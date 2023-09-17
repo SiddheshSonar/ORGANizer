@@ -44,12 +44,18 @@ class APIRequests {
   static async getDonors() {
     return await API.get("/donor");
   }
+  static async getRecipients() {
+    return await API.get("/receiver");
+  }
   static async getMatches(data) {
     // data: {
       // organ: "Heart",
       // expiry_hours: 24,
     // }
     return await API.post("/hospital/match", data);
+  }
+  static async getOrgans () {
+    return await API.get("/receiver/organs");
   }
 }
 

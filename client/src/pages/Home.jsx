@@ -5,6 +5,7 @@ import Typewriter from 'typewriter-effect';
 import APIRequests from '../api';
 import CircularProgress from '@mui/material/CircularProgress';
 
+
 const Home = () => {
     const [data, setData] = useState();
     const user = JSON.parse(localStorage.getItem('profile'))
@@ -13,6 +14,10 @@ const Home = () => {
     const [content, setContent] = useState('')
     const [button, setButton] = useState('')
     const [loading, setLoading] = useState(true)
+
+    if (userType === 'hospital') {
+        window.location.pathname = '/transplant'
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,6 +92,7 @@ const Home = () => {
                 />
             </div>
         </div>)}
+        
         </>
     );
 };

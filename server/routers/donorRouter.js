@@ -14,7 +14,8 @@ const dC = new DonorController();
 // uR.post("/friend/:id", auth, uC.sendFriendRequest);
 // uR.post("/friend/accept/:id", auth, uC.acceptFriendRequest);
 dR.post("/addDateTo", dC.addDateTo);
-
 dR.get('/', dC.getAllDonors)
+dR.get("/profile", dC.profile);
+dR.post("/organ-reduction", dC.organReduction);
 
 export default dR;

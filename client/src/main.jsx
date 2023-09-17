@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import {
@@ -14,9 +14,12 @@ import Temp from './components/navbar/Temp.jsx';
 import Hospital from './components/hospital/Hospital.jsx';
 import Home from './pages/Home.jsx';
 import Donor from './pages/Donor.jsx';
-import Application from './pages/Application.jsx';  
+import Application from './pages/Application.jsx';
 import Transplant from './pages/Transplant.jsx';
+import Profile from './pages/Profile.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
+import Kommunicate from '../src/components/kommunicate/kommunicate.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/mapTest",
-    element: <MapTest/>,
+    element: <MapTest />,
   },
   {
     path: "/temp",
@@ -59,11 +62,18 @@ const router = createBrowserRouter([
     path: "/transplant",
     element: <Transplant />
   },
+  {
+    path: "/profile",
+    element: <Profile />
+  },
 ]);
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Layout/>
+    <Layout />
     <RouterProvider router={router} />
+    <Kommunicate />
   </React.StrictMode>,
 )

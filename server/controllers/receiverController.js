@@ -68,6 +68,74 @@ class ReceiverController {
             res.status(500).send({ message: "Internal server error" })
         }
     }
+
+    getAllRecipients = async (req, res) => {
+        try {
+            const receiverWithEHR = await Receiver.aggregate([
+                {
+                    $lookup: {
+                        from: "ehrs",
+                        localField: "phone",
+                        foreignField: "phone",
+                        as: "ehrData"
+                    }
+                }
+            ]);
+    
+            res.status(200).json(receiverWithEHR);
+        } catch (error) {
+            res.status(404).json({ message: error.message });
+        }
+    }
+    addOrgan = async (req, res) => {
+        console.log(req.body)
+        const {email, organ, dateTime} = req.body;
+        try {
+            
+            const rec = await Receiver.findOne({email: email});
+            if(rec){
+                let find = false;
+                console.log("recv org map")
+                rec.organ.map((item) => {
+                    console.log(item)
+                    if(item.name == organ){
+                        find=true;
+                    }
+                })
+                if(find){
+                    console.log("Organ already exists")
+                    return res.status(202).json({message: "Organ already exists"})
+                } else{
+                    rec.organ.push({name: organ, expiry_date: dateTime})
+                    await rec.save();
+
+                    console.log("Organ added successfully")
+                    return res.status(200).json({message: "Organ added successfully"})
+                }
+            } else{
+                console.log("Receiver not found")
+                return res.status(404).json({message: "Receiver not found"})
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    getOrgans = async (req, res) => {
+        try {
+            const uid = req.userID;
+            const receiver = await Receiver.findById(uid);
+            if (receiver) {
+                return res.status(200).json({ organs: receiver.organ })
+            }
+            return res.status(404).json({ message: "Receiver not found" })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: "Internal server error" })
+            
+        }
+    }
+    
 }
 
 export default ReceiverController;
