@@ -7,7 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
-import img from "../assets/camp.jpg";
+import img from "../assets/updated.jpg";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -155,7 +155,7 @@ const Application = () => {
       </div>
       <div className="w-1/2 h-full">
         <div className="w-full h-full flex flex-col items-end justify-center bg-cover">
-          <img style={{ height: "93vh" }} src={img} alt="Campaign" />
+          <img style={{ height: "103vh" }} src={img} alt="Campaign" />
         </div>
       </div>
     </div>
