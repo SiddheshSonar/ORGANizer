@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { toast } from 'react-toastify';
 import APIRequests from '../api';
 
-const HosDoner = ({ donor, setUpdatedRec, setUpdatedRecLoading }) => {
+const HosDoner = ({ donor, setUpdatedRec, setUpdatedRecLoading, setSelectedOrg}) => {
     const navigate = useNavigate();
     const ehr = donor.ehrData[0];
     // console.log("'''", donor)
@@ -20,6 +20,11 @@ const HosDoner = ({ donor, setUpdatedRec, setUpdatedRecLoading }) => {
 
     const handleClickOpen = () => {
         setOpen(true);
+    };
+
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
     };
 
     const handleClose = () => {
@@ -36,9 +41,13 @@ const HosDoner = ({ donor, setUpdatedRec, setUpdatedRecLoading }) => {
             // Perform matchmaking or other actions here
             console.log('Selected Organ:', selectedOrgan);
             console.log('Expiry Date:', expiryDate);
+            setSelectedOrg(selectedOrgan)
             // setUpdatedRec('Helloooo')
             const res = await APIRequests.getMatches({ organ: selectedOrgan, expiry_hours: expiryDate });
             console.log(res.data);
+            if (res.data.length === 0) {
+                toast.error('No matches found!');
+            }
             setUpdatedRec(res.data);
             setUpdatedRecLoading(false);
             handleClose();
@@ -139,7 +148,7 @@ const HosDoner = ({ donor, setUpdatedRec, setUpdatedRecLoading }) => {
                                                 Surgery {index + 1}: {surgery.name}
                                             </div>
                                             <div>
-                                                Date: {surgery.date}
+                                                Date: {formatDate(surgery.date)}
                                             </div>
                                         </div>
                                     ))}

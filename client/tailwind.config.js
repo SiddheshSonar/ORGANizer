@@ -13,6 +13,8 @@ export default {
       'cream': '#F9DEC9',
       'maroon': '#3D0C11',
       'smt': '#ce5e50',
+      'green': '#367E18',
+      
     },
     extend: {
       boxShadow: {

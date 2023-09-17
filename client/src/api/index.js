@@ -57,6 +57,9 @@ class APIRequests {
   static async getOrgans () {
     return await API.get("/receiver/organs");
   }
+  static async matchOrgan (data) {
+    return await API.post("/receiver/transplant", data);
+  }
 }
 
 export default APIRequests;

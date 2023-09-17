@@ -147,9 +147,10 @@ class ReceiverController {
     }
     organTransplant = async (req, res) => {
         const {receiverID, donorID, organ} = req.body;
+        console.log(req.body)
         try {
             const receiver = await Receiver.findById(receiverID);
-
+            console.log(receiver)
 
             for(let i=0; i<receiver.organ.length; i++){
                 if(receiver.organ[i].name == organ){
