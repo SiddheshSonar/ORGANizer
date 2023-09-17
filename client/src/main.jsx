@@ -8,7 +8,7 @@ import {
 import './index.css'
 import Layout from './layout.jsx';
 import Login from './components/login/login.jsx';
-import Register from './components/register/register.jsx';
+import Register from './components/register/Register.jsx';
 import MapTest from './components/map/MapTest.jsx';
 import Temp from './components/navbar/Temp.jsx';
 import Hospital from './components/hospital/Hospital.jsx';
