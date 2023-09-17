@@ -73,6 +73,10 @@ const RecForm = () => {
     setRegistrationDetails({ ...registrationDetails, gender: e.target.value });
   };
 
+  function timeout(delay) {
+    return new Promise(res => setTimeout(res, delay));
+}
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (registrationDetails.password !== registrationDetails.confirmPassword) {
@@ -87,6 +91,8 @@ const RecForm = () => {
 
       if (response.status === 200) {
         toast.success("Registration successful");
+        await timeout(2000);
+        window.location.pathname = "/login";
       } else {
         toast.error("Registration failed");
       }
