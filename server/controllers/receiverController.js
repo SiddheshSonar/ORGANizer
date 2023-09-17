@@ -95,7 +95,9 @@ class ReceiverController {
             const rec = await Receiver.findOne({email: email});
             if(rec){
                 let find = false;
+                console.log("recv org map")
                 rec.organ.map((item) => {
+                    console.log(item)
                     if(item.name == organ){
                         find=true;
                     }
@@ -116,6 +118,21 @@ class ReceiverController {
             }
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    getOrgans = async (req, res) => {
+        try {
+            const uid = req.userID;
+            const receiver = await Receiver.findById(uid);
+            if (receiver) {
+                return res.status(200).json({ organs: receiver.organ })
+            }
+            return res.status(404).json({ message: "Receiver not found" })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ message: "Internal server error" })
+            
         }
     }
     

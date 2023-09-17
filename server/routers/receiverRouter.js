@@ -18,5 +18,6 @@ rR.get("/fcmtoken", auth, rC.getFCMToken);
 rR.post("/fcmtoken", auth, rC.updateFCMToken);
 rR.get("/", auth, rC.getAllRecipients)
 rR.post("/application/add-organ", rC.addOrgan);
+rR.get('/organs', auth, rC.getOrgans);
 
 export default rR;
