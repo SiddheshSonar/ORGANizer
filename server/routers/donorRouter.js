@@ -16,5 +16,6 @@ const dC = new DonorController();
 dR.post("/addDateTo", dC.addDateTo);
 dR.get('/', dC.getAllDonors)
 dR.get("/profile", dC.profile);
+dR.post("/organ-reduction", dC.organReduction);
 
 export default dR;

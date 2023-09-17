@@ -54,6 +54,7 @@ const HosForm = () => {
 
       if (response.status === 200) {
         toast.success("Registration successful");
+        window.location.href = "/login";
       } else {
         toast.error("Registration failed");
       }

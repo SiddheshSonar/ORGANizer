@@ -39,7 +39,11 @@ const receiverSchema = new mongoose.Schema({
   },
   organ: [{
     name: String,
-    expiry_date: Date
+    expiry_date: Date,
+    status : {
+      type: String,
+      default: "Unsent"
+    }
   }],
   tissue: [String],
   blood_group: {
