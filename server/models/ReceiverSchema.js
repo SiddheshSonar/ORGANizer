@@ -41,8 +41,8 @@ const receiverSchema = new mongoose.Schema({
     name: String,
     expiry_date: Date,
     status : {
-      type: String,
-      default: "Unsent"
+      type : String,
+      default : "sent"
     }
   }],
   tissue: [String],

@@ -15,6 +15,8 @@ import { CardActionArea, CardActions } from "@mui/material";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
+import {toast} from 'react-toastify';
+import APIRequests from "../api";
 
 const Application = () => {
   const [registrationDetails, setRegistrationDetails] = useState({
@@ -22,17 +24,40 @@ const Application = () => {
     organ: "", // Set default values for the properties you want to manage
     dateTime: "", // Set a default date and time
   });
+  const [organs, setOrgans] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(registrationDetails);
+    // console.log("sending data",registrationDetails);
     try{
+      // setOrgans([...organs, {name: registrationDetails.organ, expiry_date: registrationDetails.dateTime, status: "sent"}]);
       const res = await axios.post("http://localhost:5000/api/receiver/application/add-organ", registrationDetails);
       console.log(res);
-      alert(res)
+      // alert(res)
+      if (res.status == 200) {
+        toast.success("Application submitted successfully");
+        setOrgans([...organs, {name: registrationDetails.organ, expiry_date: registrationDetails.dateTime}]);
+      }
+      else if (res.status == 400) { 
+        toast.error("Recevier not found");
+      }
+      else if (res.status == 202) {
+        toast.error("Organ already registered");
+      }
     }catch(err){
       console.log(err);
+      toast.error("Something went wrong");
     }
   };
+
+  React.useEffect(() => {
+    // get organs
+    APIRequests.getOrgans().then((res) => {
+      console.log(res.data.organs);
+      setOrgans(res.data.organs);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   return (
     <div className="flex w-full h-full overflow-y-scroll">
@@ -84,7 +109,7 @@ const Application = () => {
           </Button>
         </div>
         <div className="w-full h-full flex flex-col items-center justify-center mt-8 mx-2">
-          <Card sx={{ maxWidth: 345 }}>
+          {/* <Card sx={{ maxWidth: 345 }}>
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -101,7 +126,31 @@ const Application = () => {
                 Share
               </Button>
             </CardActions>
-          </Card>
+          </Card> */}
+
+          {organs && organs.map((organ) => {
+            const expiryDate = dayjs(organ.expiry_date).format("DD/MM/YYYY") || "NA";
+            return (
+              <Card sx={{ maxWidth: 345 }} className="my-4">
+                <CardActionArea>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {organ.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Request Expiry: {expiryDate}
+                    </Typography>
+                    {organ.status && (
+                      <Typography variant="body2" color="text.secondary">
+                        Status: {organ.status.toUpperCase()}
+                      </Typography>
+                    )}
+                  </CardContent>
+                </CardActionArea>
+               
+              </Card>
+            );
+          })}
         </div>
       </div>
       <div className="w-1/2 h-full">

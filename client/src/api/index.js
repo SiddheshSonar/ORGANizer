@@ -54,6 +54,9 @@ class APIRequests {
     // }
     return await API.post("/hospital/match", data);
   }
+  static async getOrgans () {
+    return await API.get("/receiver/organs");
+  }
 }
 
 export default APIRequests;
