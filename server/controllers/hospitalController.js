@@ -110,7 +110,7 @@ class HospitalController {
             console.log("Filtered Receiver Array: ", filteredReceiverArr);
             
             // Remove null entries and sort by duration in ascending order.
-            const finalReceiverArr = filteredReceiverArr.filter((receiver) => receiver !== null);
+            let finalReceiverArr = filteredReceiverArr.filter((receiver) => receiver !== null);
             finalReceiverArr.sort((a, b) => a.duration - b.duration);
             console.log("Final Receiver Array: ", finalReceiverArr);
             //send only ._doc
