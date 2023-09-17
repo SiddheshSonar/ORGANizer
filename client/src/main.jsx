@@ -20,6 +20,7 @@ import Profile from './pages/Profile.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import Kommunicate from "@kommunicate/kommunicate-chatbot-plugin";
 import Kommunicate from '../src/components/kommunicate/kommunicate.jsx';
+import VideoCall from './components/daily/VideoCall.jsx';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />
+  },
+  {
+    path: "/chat/:id",
+    element: <VideoCall />
   },
 ]);
 

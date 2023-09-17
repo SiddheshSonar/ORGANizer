@@ -32,6 +32,63 @@ bR.use("/hospital", hR);
 bR.use("/receiver", rR);
 bR.use("/donor", dr);
 
+const API_KEY = "d1adedeed168c3081c3814306ab6a27999c72cb6ec4a6993c390fd4e8f6dd321";
+
+const headers = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+  Authorization: "Bearer " + API_KEY,
+};
+
+const getRoom = async (room) => {
+  try {
+    const res = await fetch(`https://api.daily.co/v1/rooms/${room}`, {
+      method: "GET",
+      headers,
+    })
+    const json = await res.json()
+    return json
+  } catch (err) {
+    return console.error("error:" + err)
+  }
+};
+
+const createRoom = async (room) => {
+  try {
+    const res = await fetch("https://api.daily.co/v1/rooms", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        name: room,
+        properties: {
+          enable_screenshare: true,
+          enable_chat: true,
+          start_video_off: true,
+          start_audio_off: false,
+          lang: "en",
+        },
+      }),
+    })
+    const json = await res.json()
+    return json
+  } catch (err) {
+    return console.log("error:" + err)
+  }
+};
+
+app.get("/video-call/:id", async function (req, res) {
+  const roomId = req.params.id;
+
+  const room = await getRoom(roomId);
+  if (room.error) {
+    const newRoom = await createRoom(roomId);
+    res.status(200).send(newRoom);
+  } else {
+    res.status(200).send(room);
+  }
+});
+
+
 // Server
 const PORT = 5000;
 app.listen(PORT, () => {
