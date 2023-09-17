@@ -116,6 +116,7 @@ class HospitalController {
             //send only ._doc
             // const rr = finalReceiverArr.map((receiver) => receiver._doc);
             // console.log("RR: ", rr);
+            finalReceiverArr = filteredReceiverArr.filter((receiver) => receiver !== null);
             res.status(200).json(finalReceiverArr);
         } catch (err) {
             console.error(err);

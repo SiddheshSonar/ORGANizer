@@ -52,16 +52,38 @@ class DonorController {
   }
 
   profile = async (req, res) => {
+    console.log(req.body)
     const { email } = req.body;
     try {
       const donor = await Donor.findOne({ email: email });
       if (donor) {
         return res.status(200).json(donor);
       }
-      return res.status(404).json({ message: "Donor not found" });
+      return res.status(403).json({ message: "Donor not found" });
     } catch (error) {
       console.log(error);
       res.status(500).send({ message: "Internal server error" });
+    }
+  }
+  organReduction = async (req, res) => {
+    const { email, organ } = req.body;
+    try {
+
+      const donor = await Donor.findOne({ email: email });
+      if (donor) {
+        console.log(donor.organ)
+        donor.organ = donor.organ.filter((item) => item.name !== organ);
+        if(donor.organ.length == 0){
+          donor.availability = false;
+        }
+        await donor.save();
+        return res.status(200).json({ message: "Organ removed" });
+      } else {
+        return res.status(403).json({ message: "Donor not found" });
+      }
+
+    } catch (error) {
+      console.log(error)
     }
   }
 }
