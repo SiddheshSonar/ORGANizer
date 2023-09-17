@@ -15,13 +15,15 @@ class UserController {
 
     sendNotification = async (req, res) => {
         try {
-            const { uid, title, body } = req.body;
+            const { uid, title, body, latitude, longitude } = req.body;
+            console.log(req.body)
             const user = await Receiver.findById(uid);
             console.log(user.fcm_token)
             if (user) {
                 let message = {
-                    notification: { title: title, body: body }, token: user.fcm_token,
+                    notification: { title: title, body: body }, token: user.fcm_token, data: { "latlng": `${latitude},${longitude}` }
                 };
+                console.log(message)
                 const response = await admin.messaging().send(message)
                 console.log(response);
                 res.status(200).send({ message: "Notification sent" });
@@ -36,10 +38,10 @@ class UserController {
     test = async (req, res) => {
         try {
             const ehrData = req.body;
-    
+
             const newEHR = new EHR(ehrData);
             await newEHR.save();
-    
+
             res.status(201).send({ message: 'EHR record successfully added!' });
         } catch (error) {
             res.status(500).send({ message: 'Error inserting EHR record', error: error.message });

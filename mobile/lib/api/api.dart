@@ -16,7 +16,6 @@ class Api {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest:
           (RequestOptions options, RequestInterceptorHandler handler) async {
-        // Add Bearer token to request headers
         var user = box.read('user');
         user = user != null ? jsonDecode(user) : null;
         if (user != null) {
@@ -36,6 +35,7 @@ class Api {
   // static final storiesCount = "${baseURL}get_story_count";
   static final login = "${baseURL}receiver/mlogin";
   static final getupdateFCM = "${baseURL}receiver/fcmtoken";
+  static final allhospitals = "${baseURL}hospital";
 
   void setBaseURL(String url) {
     baseURL = url;
@@ -81,6 +81,20 @@ class Api {
         getupdateFCM,
       );
       print("resp: ${response.data}");
+      return response.data;
+    } catch (e) {
+      if (kDebugMode) print("login err: $e");
+      // return {}; // You can handle error cases as needed
+      throw Exception(e);
+    }
+  }
+
+  Future<List<dynamic>> getHospitals() async {
+    try {
+      final response = await _dio.get(
+        allhospitals,
+      );
+      // print("login resp: ${response.data}");
       return response.data;
     } catch (e) {
       if (kDebugMode) print("login err: $e");

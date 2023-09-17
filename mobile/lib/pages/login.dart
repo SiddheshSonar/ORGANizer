@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
     //create a minimal login page
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xFF232946),
+      backgroundColor: Color.fromARGB(255, 77, 131, 167),
       // backgroundColor: const Color(0xFF4ECCA3),
       body:
           Center(
