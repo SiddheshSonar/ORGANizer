@@ -57,7 +57,7 @@ export default function DonProf() {
                   className="rounded-full w-32 h-32 mx-auto lg:mx-0"
                 />
                 <p className="text-center text-xl font-bold mt-2">
-                  {data.name || "Johnatan Smith"}
+                  {data.name}
                 </p>
                 <div className="flex justify-center mb-2">
                   <button className="px-4 py-2 border border-blue-500 text-blue-500 ml-2 hover:bg-blue-100 item-center justify-center">
