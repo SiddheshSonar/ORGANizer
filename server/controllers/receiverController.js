@@ -1,8 +1,18 @@
 import mongoose from "mongoose";
 import Receiver from "../models/ReceiverSchema.js";
+import Donor from "../models/DonorSchema.js";
+import Hospital from "../models/HospitalSchema.js";
 import jwt from "jsonwebtoken";
+import admin from "firebase-admin";
+import serviceAccount from "../secrets/firebase-admin.json" assert { type: "json" };
+
 class ReceiverController {
-    constructor() { }
+    constructor() {
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            // databaseURL: ""
+        });
+     }
 
     login = async (req, res) => {
         const { email, password, fcm_token } = req.body;
@@ -133,6 +143,44 @@ class ReceiverController {
             console.log(error)
             res.status(500).send({ message: "Internal server error" })
             
+        }
+    }
+    organTransplant = async (req, res) => {
+        const {receiverID, donorID, organ} = req.body;
+        try {
+            const receiver = await Receiver.findById(receiverID);
+
+
+            for(let i=0; i<receiver.organ.length; i++){
+                if(receiver.organ[i].name == organ){
+                    receiver.organ[i].status = "accepted";
+                }
+            }
+            await receiver.save();
+
+            const donor = await Donor.findById(donorID);
+
+            let newDonorOrgans = [];
+            for(let i=0; i<donor.organ.length; i++){
+                if(donor.organ[i].name != organ){
+                    newDonorOrgans.push(donor.organ[i]);
+                }
+            }
+            donor.organ = newDonorOrgans;
+            await donor.save();
+
+            const hid = req.userID;
+            const hospital = await Hospital.findById(hid);
+            let message = {
+                notification: { title: "You've been matched", body: `Please arrive at ${hospital.name}` }, token: receiver.fcm_token, data:{'latlng':`${hospital.location.latitude},${hospital.location.longitude}`}
+            };
+            const response = await admin.messaging().send(message)
+            console.log(response);
+            res.status(200).send({ message: "Notification sent" });
+
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send({ message: "Internal server error" })
         }
     }
     

@@ -7,10 +7,10 @@ import EHR from "../models/EHRSchema.js";
 
 class UserController {
     constructor() {
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            // databaseURL: ""
-        });
+        // admin.initializeApp({
+        //     credential: admin.credential.cert(serviceAccount),
+        //     // databaseURL: ""
+        // });
     }
 
     sendNotification = async (req, res) => {
