@@ -29,7 +29,9 @@ const Register = () => {
 
     return (
         <div className='w-full h-screen flex flex-col items-center'>
-            <div className='bg-lg-pink text-maroon text-3xl font-bold w-full text-center pt-8 pb-4 flex items-center justify-center gap-2'>
+            <div onClick={() => {
+                window.location.pathname = '/login'
+            }} className='bg-lg-pink text-maroon text-3xl font-bold w-full text-center pt-8 pb-4 flex items-center justify-center gap-2'>
                 <div>
                     <img 
                     src={Logo}
