@@ -8,21 +8,44 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from '@mui/icons-material/Person';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Logo from '../../assets/Organ_logo.png'
 
 const NavB = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorNEl, setAnchorNEl] = useState(null);
+    const nOpen = Boolean(anchorNEl)
     const Open = Boolean(anchorEl)
     const user = JSON.parse(localStorage.getItem('profile')) || null
     const userType = user && user.type 
     const [showNav, setShowNav] = useState(true)
+    const [room, setRoom] = useState(null);
+    const [modal1, setModal1] = useState(false);
+    const [modal2, setModal2] = useState(false);
+
+    const handleSubmit = () => {
+        console.log('Room ID: ', room);
+        if (room) {
+            window.location.pathname = `/chat/${room}`
+        }
+    };
+
+    const toggle1 = () => {
+        console.log('Toggle 1 called');
+        setModal1(!modal1);
+    };
+    
+    const toggle2 = () => {
+        console.log('Toggle 2 called');
+        setModal2(!modal2);
+    };
 
     const currPath = window.location.pathname
 
     // console.log(currPath)
 
     useEffect(() => {
-        if (currPath === '/login' || currPath === '/register') {
+        if (currPath === '/login' || currPath === '/register' || currPath.startsWith('/chat')) {
             setShowNav(false)
         }
     },[currPath])
@@ -33,6 +56,14 @@ const NavB = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleNClick = (event) => {
+        setAnchorNEl(event.currentTarget);
+    };
+
+    const handleNClose = () => {
+        setAnchorNEl(null);
     };
 
     const handleLogout = () => {
@@ -79,6 +110,30 @@ const NavB = () => {
                             }} >
                             Transplant
                         </Nav.Link>
+                        <Nav.Link onClick={handleNClick}>
+                            Chat
+                        </Nav.Link>
+                        <Menu
+                            id='demo-positioned-menu'
+                            aria-labelledby='demo-positioned-button'
+                            anchorEl={anchorNEl}
+                            open={nOpen}
+                            onClose={handleNClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            MenuListProps={{
+                                'aria-labelledby': 'demo-positioned-button',
+                            }}
+                        >
+                            <MenuItem onClick={toggle1}><PersonIcon sx={{ marginRight: 1 }} />Join Room</MenuItem>
+                            <MenuItem onClick={toggle2}><LogoutIcon sx={{ marginRight: 1 }} />Create Room</MenuItem>
+                        </Menu>
                     </Nav>
                  : <Nav className="me-auto">
                        <Nav.Link
@@ -95,6 +150,34 @@ const NavB = () => {
                             }}>
                             Application
                         </Nav.Link>}
+                        {userType === 'recipient' &&  
+                        <>
+                        <Nav.Link onClick={handleNClick}>
+                            Chat
+                        </Nav.Link>
+                        <Menu
+                            id='demo-positioned-menu'
+                            aria-labelledby='demo-positioned-button'
+                            anchorEl={anchorNEl}
+                            open={nOpen}
+                            onClose={handleNClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            MenuListProps={{
+                                'aria-labelledby': 'demo-positioned-button',
+                            }}
+                        >
+                            <MenuItem onClick={toggle1}><PersonIcon sx={{ marginRight: 1 }} />Join Room</MenuItem>
+                            <MenuItem onClick={toggle2}><LogoutIcon sx={{ marginRight: 1 }} />Create Room</MenuItem>
+                        </Menu>
+                        </>
+                        }
                         {userType === 'donor' && <Nav.Link
                             onClick={() => navigateTo('/donorcard')}
                             style={{
@@ -150,6 +233,64 @@ const NavB = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
+            <Modal style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+
+            }} isOpen={modal1} toggle={toggle1}>
+                        <ModalHeader toggle={toggle1}>Enter Room ID to Join</ModalHeader>
+                        <ModalBody>
+                            <label>
+                                Room ID:
+                                <input
+                                    className='ml-4 w-3/2 border h-12 p-2.5 rounded-md'
+                                    type="text"
+                                    placeholder="Room ID"
+                                    value={room}
+                                    onChange={(e) => setRoom(e.target.value)}
+                                />
+                            </label>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" style={{ color: "black" }} onClick={handleSubmit}>
+                                Join Room
+                            </Button>{' '}
+                            <Button color="secondary" style={{ color: "black" }} onClick={toggle1}>
+                                Cancel
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                    <Modal style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+                
+            }} isOpen={modal2} toggle={toggle2}>
+                        <ModalHeader toggle={toggle2}>Enter Room ID to Create a Room</ModalHeader>
+                        <ModalBody>
+                            <label>
+                                Room ID:
+                                <input
+                                    className='ml-4 w-3/2 border h-12 p-2.5 rounded-md'
+                                    type="text"
+                                    placeholder="Room ID"
+                                    value={room}
+                                    onChange={(e) => setRoom(e.target.value)}
+                                />
+                            </label>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" style={{ color: "black" }} onClick={handleSubmit}>
+                                Create Room
+                            </Button>{' '}
+                            <Button color="secondary" style={{ color: "black" }} onClick={toggle2}>
+                                Cancel
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
         </Navbar>
     );
 };
