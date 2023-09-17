@@ -51,7 +51,13 @@ const NavB = () => {
     return (
         <Navbar collapseOnSelect expand="lg" sticky='top' variant="light" className='bg-dark-purple shadow-my-shadow'>
             <Container>
-                <Navbar.Brand onClick={() => navigateTo('/home')} className="nav-title" style={{ cursor: "pointer", fontWeight: "700" }}>
+                <Navbar.Brand onClick={() => {
+                    if (userType === 'hospital') {
+                        navigateTo('/transplant')
+                    } else {
+                    navigateTo('/home')
+                    }
+                    }} className="nav-title" style={{ cursor: "pointer", fontWeight: "700" }}>
                     <img
                         src={Logo}
                         style={{ marginRight: "10px" }}

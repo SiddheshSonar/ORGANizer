@@ -15,6 +15,10 @@ const Home = () => {
     const [button, setButton] = useState('')
     const [loading, setLoading] = useState(true)
 
+    if (userType === 'hospital') {
+        window.location.pathname = '/transplant'
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await APIRequests.getUser({ email: user.email, type: userType})

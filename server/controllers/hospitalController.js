@@ -20,6 +20,7 @@ class HospitalController {
             const { organ, expiry_hours } = req.body;
             const expiry_time = expiry_hours * 60 * 60;
             // console.log(expiry_time);
+            console.log(organ)
             const hospital = await Hospital.findById(hospital_id);
             // console.log(hospital);
             if (!hospital) {
@@ -39,10 +40,27 @@ class HospitalController {
                     }
                 }
             ]);
-
-            let receiverArr = receiver.filter((receiver) => {
-                return receiver.organ.includes(organ);
-            });
+            console.log("Receiver: ", receiver);    
+            // let receiverArr = receiver.filter((receiver) => {
+            //     return receiver.organ.includes(organ);
+            // });
+            console.log("prg: ", organ);
+            let receiverArr  = []
+            for(let i=0; i<receiver.length; i++){
+                console.log("Name: ", receiver[i].name)
+                // console.log("Organ: ", receiver[i].organ.name)
+                // if(receiver[i].organ.name == organ){
+                //     console.log("Organ: ", receiver[i].organ.name)
+                //     receiverArr.push(receiver[i])
+                // }
+                for(let j=0; j<receiver[i].organ.length; j++){
+                    if(receiver[i].organ[j].name == organ){
+                        console.log("Organ: ", receiver[i].organ[j].name)
+                        receiverArr.push(receiver[i])
+                    }
+                }
+            }
+            
 
             console.log("Receiver Array: ", receiverArr)
 
@@ -63,7 +81,8 @@ class HospitalController {
                     // return null; // Remove invalid entries.
                 }
                 console.log(`Name: ${receiver.name}`);
-                const durationValue = dur.data.rows[0].elements[0].duration.value;
+                console.log(`Duration: ${dur.data.rows[0].elements[0].duration}`);
+                const durationValue = dur.data.rows[0].elements[0].duration ? dur.data.rows[0].elements[0].duration.value : null;
                 console.log(`Duration Value: ${durationValue}`);
                 console.log(`Expiry Time: ${expiry_time}`);
 
