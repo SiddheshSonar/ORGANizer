@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get_storage/get_storage.dart';
 // import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:mobile/components/blogs.dart';
 import 'package:mobile/components/home_logo.dart';
@@ -18,6 +21,23 @@ class HomeLogged extends StatefulWidget {
 }
 
 class _HomeLoggedState extends State<HomeLogged> {
+  var user = null;
+  final box = GetStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    user = box.read("user");
+    if (user == null) {
+      // box.write("isIn", 0);
+    } else {
+      user = jsonDecode(user);
+      print("User(g): ${user["name"]}");
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -47,8 +67,11 @@ class _HomeLoggedState extends State<HomeLogged> {
             const SizedBox(
               height: 20,
             ),
-            NotLog1(),
-            widget.isLogged ? Text("") : NotLog1(),
+            // NotLog1(),
+            widget.isLogged ? Padding(
+              padding: const EdgeInsets.only(bottom:12.0),
+              child: Text("Hi ${user["name"]}!", style: TextStyle(fontSize: 20, fontFamily: "Raleway", fontWeight: FontWeight.bold),),
+            ) : NotLog1(),
             Blogs(),
             MyMap(),
           ],
