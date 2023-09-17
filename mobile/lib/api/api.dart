@@ -19,7 +19,6 @@ class Api {
         var user = box.read('user');
         user = user != null ? jsonDecode(user) : null;
         if (user != null) {
-
           // print("user token2: ${user['token']}");
           options.headers['Authorization'] = 'Bearer ${user['token']}';
         }
@@ -29,7 +28,8 @@ class Api {
   }
 
   // static var baseURL = "http://127.0.0.1:5000/";
-  static var baseURL = "http://10.0.2.2:5000/api/";
+  // static var baseURL = "http://10.0.2.2:5000/api/";
+  static var baseURL = "https://organizer-server-uek2.onrender.com/api/";
 
   // endpoints:
   // static final storiesCount = "${baseURL}get_story_count";
@@ -59,8 +59,7 @@ class Api {
     }
   }
 
-  Future<Map<String, dynamic>> updateFCMRequest(
-      {required String token}) async {
+  Future<Map<String, dynamic>> updateFCMRequest({required String token}) async {
     try {
       final response = await _dio.post(
         getupdateFCM,
