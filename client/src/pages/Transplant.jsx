@@ -100,6 +100,11 @@ const Transplant = () => {
         });
     };
 
+    function timeout(delay) {
+        return new Promise(res => setTimeout(res, delay));
+    }
+
+
     const renderUserList = (data) => (
         <div className='w-full h-screen overflow-y-scroll mb-24'>
             {filteredData(data).map((user, index) => (
@@ -204,7 +209,10 @@ const Transplant = () => {
                                                             ))}
                                                             </div>
                                                             <div className='flex items-center justify-center gap-2'>
-                                                                <div onClick={() => {
+                                                                <div onClick={async () => {
+                                                                    toast.success("Notificatio Sent to recipient");
+                                                                    await timeout(2000);
+                                                                    window.location.reload();
                                                                     handleRec(recipient, selectedUser);
                                                                 }} className='border p-1 mx- rounded-lg bg-green text-white cursor-pointer transform transition-transform duration-300 ease-in-out hover:scale-105'>
 
